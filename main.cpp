@@ -8,210 +8,225 @@ class Car{
 private:
     const int idCar;
     static int totalNumberOfCars;
-    char* Name;
-    char* EngineLayout;
-    float Price;
-    int HorsePower, NrAccelerationIntervals, year, km, idDealership; // !!
-    float* AccelerationTimes;
-    bool OnStock;
+    char* name;
+    char* engineLayout;
+    float price;
+    int horsePower, nrAccelerationIntervals, year, km, idDealership; // !!
+    float* accelerationTimes;
+    bool onStock;
     string combustible; // !!
 
 public:
-    const char* getName();
-    const char* getEngineLayout();
+    // definire getteri
+    const char* getName() const; // const dupa numele functiei pentru a nu putea fi schimbat obiectul curent
+    const char* getEngineLayout() const;
     float getPrice() const;
-    int getHorsePower();
-    int getNrAccelerationIntervals();
-    int getYear();
-    int getKm();
-    const float* getAccelerationTimes();
-    bool getOnStock();
-    string getCombustible();
-    int getIdDealership();
+    int getHorsePower() const;
+    int getnrAccelerationIntervals() const;
+    int getYear() const;
+    int getKm() const;
+    const float* getAccelerationTimes() const;
+    bool getOnStock() const;
+    string getCombustible() const;
+    int getIdDealership() const;
     int getId() const;
+
+    // Functionalitate Car cu care se returneaza string-uri cu informatii despre masina
     string howFastIsThisCar();
 
-    void setName(char* Name);
-    void setEngineLayout(char* EngineLayout);
-    void setPrice(float Price);
-    void setHorsePower(int HorsePower);
-    void setAccelerationTimes(float NewAccelerationTime);
+    // definire setteri
+    void setName(char* name);
+    void setEngineLayout(char* engineLayout);
+    void setPrice(float price);
+    void setHorsePower(int horsePower);
+    void setAccelerationTimes(float NewAccelerationTime);   // va adauga un nou timp de accelerare in vector
     void setYear(int year);
     void setKm(int km);
     void setCombustible(string combustible);
-    void setIdDealership(int idDealership);
+    void setIdDealership(int idDealership);  // va fi folosit pentru dealership-ul care detine aceasta masina
 
+    // definire constructori
     Car();
     Car(char* name, float price, int year, int km, bool onStock);
-    Car(char* name, int HorsePower, string combustible);
-    Car(char* Name, char* EngineLayout, float Price, int HorsePower, int year, int km, int NrAccelerationIntervals, float* AccelerationTimes, bool OnStock, string combustible);
+    Car(char* name, int horsePower, string combustible);
+    Car(char* name, char* engineLayout, float price, int horsePower, int year, int km, int nrAccelerationIntervals, float* accelerationTimes, bool onStock, string combustible);
     Car(const Car& obj);
     ~Car();
 
+    // definire operatori
     Car& operator =(const Car& obj);
     bool operator ==(const Car& obj);
     bool operator <(const Car& obj);
-    friend ostream& operator <<(ostream& out, const Car& c1);  // ??????
+    friend ostream& operator <<(ostream& out, const Car& c1);
     friend istream& operator >>(istream& in, Car& c1);
     float operator [](int);
     Car operator+(int add);
     friend Car operator+(int add, Car E);
     Car operator +(const Car& obj);
     Car operator -(const Car& obj);
-    Car operator++();
+    Car& operator++();
     Car operator++(int);
     operator bool() const;
     operator bool();
     void Afisare();
 };
 
-// =============================== constructori si destructor Car
+// constructori si destructor Car
 
 Car::Car():idCar(totalNumberOfCars++){
-    this->Name = new char[strlen("Unknown")+1];
-    strcpy(this->Name, "Unknown");
-    this->EngineLayout = new char[strlen("Unknown")+1];
-    strcpy(this->EngineLayout, "Unknown");
-    this->Price = 0;
-    this->HorsePower = 0;
-    this->NrAccelerationIntervals = 0;
-    this->AccelerationTimes = NULL;
-    this->OnStock = false;
+    this->name = new char[strlen("Unknown")+1];
+    strcpy(this->name, "Unknown");
+    this->engineLayout = new char[strlen("Unknown")+1];
+    strcpy(this->engineLayout, "Unknown");
+    this->price = 0;
+    this->horsePower = 0;
+    this->nrAccelerationIntervals = 0;
+    this->accelerationTimes = NULL;
+    this->onStock = false;
     this->idDealership = -1;
     this->combustible = "Unknown";
     this->year = 0;
     this->km = 0;
 }
 Car::Car(char* name, float price, int year, int km, bool onStock):idCar(totalNumberOfCars++){
-    this->Name = new char[strlen(name)+1];
-    strcpy(this->Name, name);
-    this->EngineLayout = new char[strlen("Unknown")+1];
-    strcpy(this->EngineLayout, "Unknown");
-    this->Price = price;
-    this->HorsePower = 0;
-    this->NrAccelerationIntervals = 0;
-    this->AccelerationTimes = NULL;
-    this->OnStock = false;
+    this->name = new char[strlen(name)+1];
+    strcpy(this->name, name);
+    this->engineLayout = new char[strlen("Unknown")+1];
+    strcpy(this->engineLayout, "Unknown");
+    this->price = price;
+    this->horsePower = 0;
+    this->nrAccelerationIntervals = 0;
+    this->accelerationTimes = NULL;
+    this->onStock = false;
     this->idDealership = -1;
     this->combustible = "Unknown";
     this->year = year;
     this->km = km;
 }
 Car::Car(char* engineLayout, int horsePower, string comb):idCar(totalNumberOfCars++){
-    this->Name = new char[strlen("Unknown")+1];
-    strcpy(this->Name, "Unknown");
-    this->EngineLayout = new char[strlen(engineLayout)+1];
-    strcpy(this->EngineLayout, engineLayout);
-    this->Price = 0;
-    this->HorsePower = horsePower;
-    this->NrAccelerationIntervals = 0;
-    this->AccelerationTimes = NULL;
-    this->OnStock = false;
+    this->name = new char[strlen("Unknown")+1];
+    strcpy(this->name, "Unknown");
+    this->engineLayout = new char[strlen(engineLayout)+1];
+    strcpy(this->engineLayout, engineLayout);
+    this->price = 0;
+    this->horsePower = horsePower;
+    this->nrAccelerationIntervals = 0;
+    this->accelerationTimes = NULL;
+    this->onStock = false;
     this->idDealership = -1;
     this->combustible = comb;
     this->year = 0;
     this->km = 0;
 }
-Car::Car(char* Name, char* EngineLayout, float Price, int HorsePower, int year, int km, int NrAccelerationIntervals, float* AccelerationTimes, bool OnStock, string combustible):idCar(totalNumberOfCars++){
-    this->Name = new char[strlen(Name)+1];
-    strcpy(this->Name, Name);
-    this->EngineLayout = new char[strlen(EngineLayout)+1];
-    strcpy(this->EngineLayout, EngineLayout);
-    this->Price = Price;
-    this->HorsePower = HorsePower;
-    this->NrAccelerationIntervals = NrAccelerationIntervals;
-    this->AccelerationTimes = new float[NrAccelerationIntervals];
-    for(int i=0; i<this->NrAccelerationIntervals; i++){
-        this->AccelerationTimes[i] = AccelerationTimes[i];
+Car::Car(char* name, char* engineLayout, float price, int horsePower, int year, int km, int nrAccelerationIntervals, float* accelerationTimes, bool onStock, string combustible):idCar(totalNumberOfCars++){
+    this->name = new char[strlen(name)+1];
+    strcpy(this->name, name);
+    this->engineLayout = new char[strlen(engineLayout)+1];
+    strcpy(this->engineLayout, engineLayout);
+    this->price = price;
+    this->horsePower = horsePower;
+    this->nrAccelerationIntervals = nrAccelerationIntervals;
+    this->accelerationTimes = new float[nrAccelerationIntervals];
+    for(int i=0; i<this->nrAccelerationIntervals; i++){
+        this->accelerationTimes[i] = accelerationTimes[i];
     }
-    this->OnStock = OnStock;
+    this->onStock = onStock;
     this->idDealership = -1;
     this->combustible = combustible;
     this->year = year;
     this->km = km;
 }
 Car::Car(const Car& obj):idCar(totalNumberOfCars++){
-    this->Name = new char[strlen(obj.Name)+1];
-    strcpy(this->Name, obj.Name);
-    this->EngineLayout = new char[strlen(obj.EngineLayout)+1];
-    strcpy(this->EngineLayout, obj.EngineLayout);
-    this->Price = obj.Price;
-    this->HorsePower = obj.HorsePower;
-    this->NrAccelerationIntervals = obj.NrAccelerationIntervals;
-    this->AccelerationTimes = new float[NrAccelerationIntervals];
-    for(int i=0; i<this->NrAccelerationIntervals; i++){
-        this->AccelerationTimes[i] = obj.AccelerationTimes[i];
+    this->name = new char[strlen(obj.name)+1];
+    strcpy(this->name, obj.name);
+    this->engineLayout = new char[strlen(obj.engineLayout)+1];
+    strcpy(this->engineLayout, obj.engineLayout);
+    this->price = obj.price;
+    this->horsePower = obj.horsePower;
+    this->nrAccelerationIntervals = obj.nrAccelerationIntervals;
+    this->accelerationTimes = new float[nrAccelerationIntervals];
+    for(int i=0; i<this->nrAccelerationIntervals; i++){
+        this->accelerationTimes[i] = obj.accelerationTimes[i];
     }
-    this->OnStock = obj.OnStock;
+    this->onStock = obj.onStock;
     this->idDealership = obj.idDealership;
     this->year = obj.year;
     this->km = obj.km;
     this->combustible = obj.combustible;
 }
 Car::~Car(){
-    if (this->Name != NULL){
-        delete[] this->Name;
-        this->Name = NULL;
+    if (this->name != NULL){
+        delete[] this->name;
+        this->name = NULL;
     }
-    if (this->EngineLayout != NULL){
-        delete[] this->EngineLayout;
-        this->EngineLayout = NULL;
+    if (this->engineLayout != NULL){
+        delete[] this->engineLayout;
+        this->engineLayout = NULL;
     }
-    if (this->AccelerationTimes != NULL) {
-        delete[] this->AccelerationTimes;
-        this->AccelerationTimes = NULL;
+    if (this->accelerationTimes != NULL) {
+        delete[] this->accelerationTimes;
+        this->accelerationTimes = NULL;
     }
     totalNumberOfCars--;
+    this->price = 0;
+    this->horsePower = 0;
+    this->nrAccelerationIntervals = 0;
+    this->year = 0;
+    this->km = 0;
+    this->idDealership = -1;
+    this->onStock = 0;
+    this->combustible.clear();
 }
 
 // ================================ getteri Car
-const char* Car::getName(){
-    return this->Name;
+const char* Car::getName() const {
+    return this->name;
 }
-const char* Car::getEngineLayout() {
-    return this->EngineLayout;
+const char* Car::getEngineLayout() const {
+    return this->engineLayout;
 }
 float Car::getPrice() const{
-    return this->Price;
+    return this->price;
 }
 int Car::getId() const{
     return this->idCar;
 }
-int Car::getHorsePower() {
-    return this->HorsePower;
+int Car::getHorsePower() const {
+    return this->horsePower;
 }
-int Car::getNrAccelerationIntervals() {
-    return this->NrAccelerationIntervals;
+int Car::getnrAccelerationIntervals() const {
+    return this->nrAccelerationIntervals;
 }
-const float* Car::getAccelerationTimes() {
-    return this->AccelerationTimes;
+const float* Car::getAccelerationTimes() const {
+    return this->accelerationTimes;
 }
-bool Car::getOnStock(){
-    return this->OnStock;
+bool Car::getOnStock() const{
+    return this->onStock;
 }
-int Car::getYear(){
+int Car::getYear()const{
     return this->year;
 }
-int Car::getKm(){
+int Car::getKm()const{
     return this->km;
 }
-string Car::getCombustible(){
+string Car::getCombustible()const{
     return this->combustible;
 }
-int Car::getIdDealership(){
+int Car::getIdDealership()const{
     return this->idDealership;
 }
-string Car::howFastIsThisCar() {
-    float Max = 0;
-    for(int i=0; i<this->NrAccelerationIntervals; i++){
-        if(Max < this->AccelerationTimes[i])
-            Max = this->AccelerationTimes[i];
+string Car::howFastIsThisCar() {  // luam media timpilor de accelerare si in functie de ea verificam daca masina este rapida sau nu
+    float average = 0, sum=0;
+    for(int i=0; i<this->nrAccelerationIntervals; i++){
+        sum += this->accelerationTimes[i];
     }
-    if(Max < 8){
+    average = sum/this->nrAccelerationIntervals;
+
+    if(average < 6){
         return "This car is really really fast";
-    } else if (Max < 10){
+    } else if (average < 10){
         return "This is a fost car";
-    } else if (Max < 20){
+    } else if (average < 20){
         return "This is subpar when it comes to speed but it is a really good car otherwise";
     } else {
         return "This is a slow car.";
@@ -219,41 +234,44 @@ string Car::howFastIsThisCar() {
 }
 
 // =============================== setteri Car
-void Car::setName(char* Name){
-    if(this->Name != Name && this->Name != NULL){
-        delete[] this->Name;
-        this->Name = new char[strlen(Name)+1];
-        strcpy(this->Name, Name);
+void Car::setName(char* name){
+    if(this->name != name && this->name != NULL){ // va trebui realocat spatiu pentru marimea char* name
+        delete[] this->name;
+        this->name = new char[strlen(name)+1];
+        strcpy(this->name, name);
     }
 }
-void Car::setEngineLayout(char* EngineLayout){
-    if(this->EngineLayout != EngineLayout && this->EngineLayout != NULL){
-        delete[] this->EngineLayout;
-        this->EngineLayout = new char[strlen(EngineLayout)+1];
-        strcpy(this->EngineLayout, EngineLayout);
+void Car::setEngineLayout(char* engineLayout){
+    if(this->engineLayout != engineLayout && this->engineLayout != NULL){
+        delete[] this->engineLayout;
+        this->engineLayout = new char[strlen(engineLayout)+1];
+        strcpy(this->engineLayout, engineLayout);
     }
 }
-void Car::setPrice(float Price){
-    this->Price = Price;
+void Car::setPrice(float price){
+    this->price = price;
 }
-void Car::setHorsePower(int HorsePower){
-    this->HorsePower = HorsePower;
+void Car::setHorsePower(int horsePower){
+    this->horsePower = horsePower;
 }
 void Car::setAccelerationTimes(float NewAccelerationTime) {
-    float* a = new float[this->NrAccelerationIntervals];
+    // trebuie să schimb spațiul pe care îl are array-ul meu pentru a adăuga un element,
+    // deci voi fi nevoit să îl copiez în altul, să îi măresc spațiul și apoi să copiez înapoi și să adaug elementul
+    float* a = new float[this->nrAccelerationIntervals];
     int i;
-    for(i=0; i<NrAccelerationIntervals; i++){
-        a[i] = this->AccelerationTimes[i];
+    for(i=0; i<nrAccelerationIntervals; i++){
+        a[i] = this->accelerationTimes[i];
     }
-    if(this->AccelerationTimes != NULL) {
-        delete[] this->AccelerationTimes;
-        this->AccelerationTimes = NULL;
+    if(this->accelerationTimes != NULL) {
+        delete[] this->accelerationTimes;
+        this->accelerationTimes = NULL;
+        this->accelerationTimes = new float[this->nrAccelerationIntervals+1];
     }
-    for(i=0; i<NrAccelerationIntervals; i++){
-        this->AccelerationTimes[i] = a[i];
+    for(i=0; i<nrAccelerationIntervals; i++){
+        this->accelerationTimes[i] = a[i];
     }
-    this->NrAccelerationIntervals = this->NrAccelerationIntervals++;
-    this->AccelerationTimes[i] = NewAccelerationTime;
+    this->nrAccelerationIntervals = this->nrAccelerationIntervals++;
+    this->accelerationTimes[i] = NewAccelerationTime;
 }
 void Car::setYear(int year){
     this->year = year;
@@ -270,30 +288,30 @@ void Car::setIdDealership(int idDealership){
 
 void Car::Afisare(){
     cout<<this->idDealership<<endl;
-    cout<<this->Name<<endl;
-    cout<<this->EngineLayout<<endl;
-    for(int i=0; i<this->NrAccelerationIntervals; i++){
-        cout<<this->AccelerationTimes[i]<<" ";
+    cout<<this->name<<endl;
+    cout<<this->engineLayout<<endl;
+    for(int i=0; i<this->nrAccelerationIntervals; i++){
+        cout<<this->accelerationTimes[i]<<" ";
     }
     cout<<endl;
-    cout<<this->NrAccelerationIntervals<<endl;
-    cout<<this->OnStock<<endl;
-    cout<<this->HorsePower<<endl;
-    cout<<this->Price<<endl;
+    cout<<this->nrAccelerationIntervals<<endl;
+    cout<<this->onStock<<endl;
+    cout<<this->horsePower<<endl;
+    cout<<this->price<<endl;
     cout<<this->idCar<<endl;
     cout<<totalNumberOfCars;
 }
 
 // =============================== supraincarcarea operatorilor
 ostream& operator <<(ostream &out, const Car &car){
-    out<<"ID: "<<car.idCar<<endl<<"IdDealership: "<<car.idDealership<<endl<<"Name: "<<car.Name<<endl<<"Engine Layout: "<<car.EngineLayout<<endl<<
-       "Price: "<<car.Price<<endl<<"Horse Power: "<<car.HorsePower<<endl<<"Year: "<<car.year<<endl<<"Km: "<<car.km<<endl<<
+    out<<"ID: "<<car.idCar<<endl<<"IdDealership: "<<car.idDealership<<endl<<"name: "<<car.name<<endl<<"Engine Layout: "<<car.engineLayout<<endl<<
+       "price: "<<car.price<<endl<<"Horse Power: "<<car.horsePower<<endl<<"Year: "<<car.year<<endl<<"Km: "<<car.km<<endl<<
        "Combustible: "<<car.combustible<<endl;
 
-    for(int i = 0; i < car.NrAccelerationIntervals; i++)
-        out<<car.AccelerationTimes[i]<<" ";
+    for(int i = 0; i < car.nrAccelerationIntervals; i++)
+        out<<car.accelerationTimes[i]<<" ";
     out<<endl;
-    if(car.OnStock == true) out<<"Este in stoc"<<endl;
+    if(car.onStock == true) out<<"Este in stoc"<<endl;
     else out<<"Nu e in stoc"<<endl;
 
     return out;
@@ -301,28 +319,29 @@ ostream& operator <<(ostream &out, const Car &car){
 istream& operator >>(istream& in, Car& car){
     cout << "Car name: ";
     char aux[100];
-    in >> aux;
-    if(car.Name != NULL){
-        delete[] car.Name;
-        car.Name = NULL;
+    in.get();
+    in.getline(aux, 100);
+    if(car.name != NULL){
+        delete[] car.name;
+        car.name = NULL;
     }
-    car.Name = new char[strlen(aux)+1];
-    strcpy(car.Name, aux);
+    car.name = new char[strlen(aux)+1];
+    strcpy(car.name, aux);
 
     cout<<"Engine Layout: ";
     in >> aux;
-    if(car.EngineLayout != NULL){
-        delete[] car.EngineLayout;
-        car.EngineLayout = NULL;
+    if(car.engineLayout != NULL){
+        delete[] car.engineLayout;
+        car.engineLayout = NULL;
     }
-    car.EngineLayout = new char[strlen(aux)+1];
-    strcpy(car.EngineLayout, aux);
+    car.engineLayout = new char[strlen(aux)+1];
+    strcpy(car.engineLayout, aux);
 
     cout<<"Horse Power: ";
-    in >> car.HorsePower;
+    in >> car.horsePower;
 
     cout<<"Car price: ";
-    in >> car.Price;
+    in >> car.price;
 
     cout<<"Year: ";
     in >> car.year;
@@ -334,19 +353,19 @@ istream& operator >>(istream& in, Car& car){
     in >> car.combustible;
 
     cout<<"On stock?";
-    in >> car.OnStock;
+    in >> car.onStock;
 
     cout << "Number of acceleration intervals: ";
-    in >> car.NrAccelerationIntervals;
+    in >> car.nrAccelerationIntervals;
 
     cout << "Acceleration times: ";
-    if(car.AccelerationTimes != NULL){
-        delete[] car.AccelerationTimes;
-        car.AccelerationTimes = NULL;
+    if(car.accelerationTimes != NULL){
+        delete[] car.accelerationTimes;
+        car.accelerationTimes = NULL;
     }
-    car.AccelerationTimes = new float[car.NrAccelerationIntervals];
-    for(int i=0; i<car.NrAccelerationIntervals; i++){
-        in >> car.AccelerationTimes[i];
+    car.accelerationTimes = new float[car.nrAccelerationIntervals];
+    for(int i=0; i<car.nrAccelerationIntervals; i++){
+        in >> car.accelerationTimes[i];
     }
 
     return in;
@@ -355,179 +374,179 @@ Car& Car::operator =(const Car &obj){
 
     if(this != &obj){
 
-        if (this->Name != NULL){
-            delete[] this->Name;
-            this->Name = NULL;
+        if (this->name != NULL){
+            delete[] this->name;
+            this->name = NULL;
         }
-        if (this->EngineLayout != NULL){
-            delete[] this->EngineLayout;
-            this->EngineLayout = NULL;
+        if (this->engineLayout != NULL){
+            delete[] this->engineLayout;
+            this->engineLayout = NULL;
         }
-        if (this->AccelerationTimes != NULL) {
-            delete[] this->AccelerationTimes;
-            this->AccelerationTimes = NULL;
+        if (this->accelerationTimes != NULL) {
+            delete[] this->accelerationTimes;
+            this->accelerationTimes = NULL;
         }
 
-        this->Name = new char[strlen(obj.Name)+1];
-        strcpy(this->Name,obj.Name);
+        this->name = new char[strlen(obj.name)+1];
+        strcpy(this->name,obj.name);
 
         this->year = obj.year;
         this->combustible = obj.combustible;
         this->km = obj.km;
 
-        this->EngineLayout = new char[strlen(obj.EngineLayout)+1];
-        strcpy(this->EngineLayout, obj.EngineLayout);
+        this->engineLayout = new char[strlen(obj.engineLayout)+1];
+        strcpy(this->engineLayout, obj.engineLayout);
 
-        this->Price = obj.Price;
-        this->HorsePower = obj.HorsePower;
-        this->NrAccelerationIntervals = obj.NrAccelerationIntervals;
-        this->OnStock = obj.OnStock;
+        this->price = obj.price;
+        this->horsePower = obj.horsePower;
+        this->nrAccelerationIntervals = obj.nrAccelerationIntervals;
+        this->onStock = obj.onStock;
         this->idDealership = obj.idDealership;
-        this->AccelerationTimes = new float[obj.NrAccelerationIntervals];
-        for(int i=0;i<obj.NrAccelerationIntervals;i++){
-            this->AccelerationTimes[i] = obj.AccelerationTimes[i];
+        this->accelerationTimes = new float[obj.nrAccelerationIntervals];
+        for(int i=0;i<obj.nrAccelerationIntervals;i++){
+            this->accelerationTimes[i] = obj.accelerationTimes[i];
         }
     }
     return *this;
 
 }
-bool Car::operator ==(const Car &obj){
-    if(strcmp(this->Name, obj.Name) == 0 && strcmp(this->EngineLayout, obj.EngineLayout) == 0 && this->HorsePower == obj.HorsePower){
+bool Car::operator ==(const Car &obj){ // dacă au același nume, același motor și același an sunt considerate egale
+    if(strcmp(this->name, obj.name) == 0 && strcmp(this->engineLayout, obj.engineLayout) == 0 && this->year == obj.year){
         return true;
     }
     return false;
 }
-bool Car::operator <(const Car &obj){
-    if(this->HorsePower < obj.HorsePower && this->Price > obj.Price && obj.year > this->year && obj.km < this->km)
+bool Car::operator <(const Car &obj){ // dacă pretul este mai mare, dar masina este mai veche, are km mai multi si cai putere mai putini este true
+    if(this->horsePower < obj.horsePower && this->price > obj.price && obj.year > this->year && obj.km < this->km)
         return true;
     return false;
 }
-float Car::operator [](int i){
+float Car::operator [](int i){ // timpul de accelerare corespunzator index-ului i
     if(i < 0)  throw runtime_error("index invalid");
-    if(i >= this->NrAccelerationIntervals) throw runtime_error("index invalid");
-    return this->AccelerationTimes[i];
+    if(i >= this->nrAccelerationIntervals) throw runtime_error("index invalid");
+    return this->accelerationTimes[i];
 }
-Car Car::operator+(int add){
+Car Car::operator+(int add){ // se mărește prețul mașinii, funcție membru pentru Car+int
     Car C(*this);
-    C.Price += add;
+    C.price += add;
     return C;
 }
-Car operator+(int add, Car C){
-    C.Price += add;
+Car operator+(int add, Car C){ // se mărește prețul mașinii, functie friend pentru int+Car
+    C.price += add;
     return C;
 }
-Car Car::operator +(const Car& obj){
+Car Car::operator +(const Car& obj){  // se formeaza o masina noua cu atribute din ambele masini
     Car C;
-    C.Name = new char[strlen(this->Name) + strlen(obj.Name) + 2];
-    if(this->Name < obj.Name){
-        strcpy(C.Name, this->Name);
-        strcat(C.Name, " ");
-        strcat(C.Name, obj.Name);
+    C.name = new char[strlen(this->name) + strlen(obj.name) + 2];
+    if(this->name < obj.name){
+        strcpy(C.name, this->name);
+        strcat(C.name, " ");
+        strcat(C.name, obj.name);
     } else {
-        strcpy(C.Name, obj.Name);
-        strcat(C.Name, " ");
-        strcat(C.Name, this->Name);
+        strcpy(C.name, obj.name);
+        strcat(C.name, " ");
+        strcat(C.name, this->name);
     }
-    C.EngineLayout = new char[strlen(this->EngineLayout) + strlen(obj.EngineLayout) + 2];
-    if(this->EngineLayout < obj.EngineLayout){
-        strcpy(C.EngineLayout, this->EngineLayout);
-        strcat(C.EngineLayout, " ");
-        strcat(C.EngineLayout, obj.EngineLayout);
+    C.engineLayout = new char[strlen(this->engineLayout) + strlen(obj.engineLayout) + 2];
+    if(this->engineLayout < obj.engineLayout){
+        strcpy(C.engineLayout, this->engineLayout);
+        strcat(C.engineLayout, " ");
+        strcat(C.engineLayout, obj.engineLayout);
     } else {
-        strcpy(C.EngineLayout, obj.EngineLayout);
-        strcat(C.EngineLayout, " ");
-        strcat(C.EngineLayout, this->EngineLayout);
+        strcpy(C.engineLayout, obj.engineLayout);
+        strcat(C.engineLayout, " ");
+        strcat(C.engineLayout, this->engineLayout);
     }
     if(this->combustible < obj.combustible){
         C.combustible = this->combustible + obj.combustible;
     } else {
         C.combustible = obj.combustible + this->combustible;
     }
-    C.Price = this->Price + obj.Price;
-    C.HorsePower = this->HorsePower + obj.HorsePower;
-    C.NrAccelerationIntervals = this->NrAccelerationIntervals + obj.NrAccelerationIntervals;
-    C.AccelerationTimes = new float[C.NrAccelerationIntervals];
-    for(int i=0; i<this->NrAccelerationIntervals; i++){
-        C.AccelerationTimes[i] = this->AccelerationTimes[i];
+    C.price = this->price + obj.price;
+    C.horsePower = this->horsePower + obj.horsePower;
+    C.nrAccelerationIntervals = this->nrAccelerationIntervals + obj.nrAccelerationIntervals;
+    C.accelerationTimes = new float[C.nrAccelerationIntervals];
+    for(int i=0; i<this->nrAccelerationIntervals; i++){
+        C.accelerationTimes[i] = this->accelerationTimes[i];
     }
-    for(int i=0; i<C.NrAccelerationIntervals; i++){
-        C.AccelerationTimes[i+this->NrAccelerationIntervals] = obj.AccelerationTimes[i];
+    for(int i=0; i<C.nrAccelerationIntervals; i++){
+        C.accelerationTimes[i+this->nrAccelerationIntervals] = obj.accelerationTimes[i];
     }
     C.year = this->year + obj.year;
     C.km = this->km + obj.km;
-    C.OnStock = (this->OnStock == 1 || obj.OnStock == 1) ? 1 : 0;
+    C.onStock = (this->onStock == 1 || obj.onStock == 1) ? 1 : 0;
     return C;
 }
-Car Car::operator -(const Car& obj){
+Car Car::operator -(const Car& obj){ // se formeaza o masina noua cu atributele din prima care nu apar in a doua
     Car C;
-    C.Name = new char[strlen(this->Name) + strlen(obj.Name) + 2];
-    if(this->Name > obj.Name){
-        strcpy(C.Name, this->Name);
-        strcat(C.Name, " ");
-        strcat(C.Name, obj.Name);
+    C.name = new char[strlen(this->name) + strlen(obj.name) + 2];
+    if(this->name > obj.name){
+        strcpy(C.name, this->name);
+        strcat(C.name, " ");
+        strcat(C.name, obj.name);
     } else {
-        strcpy(C.Name, obj.Name);
-        strcat(C.Name, " ");
-        strcat(C.Name, this->Name);
+        strcpy(C.name, obj.name);
+        strcat(C.name, " ");
+        strcat(C.name, this->name);
     }
-    C.EngineLayout = new char[strlen(this->EngineLayout) + strlen(obj.EngineLayout) + 2];
-    if(this->EngineLayout > obj.EngineLayout){
-        strcpy(C.EngineLayout, this->EngineLayout);
-        strcat(C.EngineLayout, " ");
-        strcat(C.EngineLayout, obj.EngineLayout);
+    C.engineLayout = new char[strlen(this->engineLayout) + strlen(obj.engineLayout) + 2];
+    if(this->engineLayout > obj.engineLayout){
+        strcpy(C.engineLayout, this->engineLayout);
+        strcat(C.engineLayout, " ");
+        strcat(C.engineLayout, obj.engineLayout);
     } else {
-        strcpy(C.EngineLayout, obj.EngineLayout);
-        strcat(C.EngineLayout, " ");
-        strcat(C.EngineLayout, this->EngineLayout);
+        strcpy(C.engineLayout, obj.engineLayout);
+        strcat(C.engineLayout, " ");
+        strcat(C.engineLayout, this->engineLayout);
     }
-    C.Price = this->Price - obj.Price;
-    C.HorsePower = this->HorsePower - obj.HorsePower;
+    C.price = this->price - obj.price;
+    C.horsePower = this->horsePower - obj.horsePower;
 
     vector<float> v;
-    for(int i=0; i<this->NrAccelerationIntervals; i++){
+    for(int i=0; i<this->nrAccelerationIntervals; i++){
         bool ok = 0;
-        for(int j=0; i<obj.NrAccelerationIntervals; j++){
-            if(this->AccelerationTimes[i] == obj.AccelerationTimes[j]){
+        for(int j=0; i<obj.nrAccelerationIntervals; j++){
+            if(this->accelerationTimes[i] == obj.accelerationTimes[j]){
                 ok = 1;
                 break;
             }
         }
         if (ok == 0){
-            v.push_back(this->AccelerationTimes[i]);
+            v.push_back(this->accelerationTimes[i]);
         }
     }
 
-    C.NrAccelerationIntervals = v.size();
-    C.AccelerationTimes = new float[v.size()];
+    C.nrAccelerationIntervals = v.size();
+    C.accelerationTimes = new float[v.size()];
     for(int i=0; i<v.size(); i++){
-        C.AccelerationTimes[i] = v[i];
+        C.accelerationTimes[i] = v[i];
     }
 
     C.year = this->year - obj.year;
     C.km = this->km - obj.km;
-    C.OnStock = (this->OnStock == 0 || obj.OnStock == 0) ? 0 : 1;
+    C.onStock = (this->onStock == 0 || obj.onStock == 0) ? 0 : 1;
     return C;
 }
-Car Car::operator++(){ /// incrementare prefixata (Adauga un element in multime)
-    this->Price++;
-    this->HorsePower++;
+Car& Car::operator++(){ // incrementare prefixata (maresc atributele in obiect, dupa care il returnez)
+    this->price++;
+    this->horsePower++;
     this->km++;
     this->year++;
     return *this;
 }
-Car Car::operator++(int){ /// incrementare postfixata (Adauga un element in multime)
+Car Car::operator++(int){ // incrementare postfixata (returnez atributele obiectului vechi prin alt obiect, dupa care incrementez)
     Car B(*this);
-    this->Price++;
-    this->HorsePower++;
+    this->price++;
+    this->horsePower++;
     this->km++;
     this->year++;
     return B;
 }
-Car::operator bool() const { // cast explicit
-    return  this->OnStock;
+Car::operator bool() const {
+    return  this->onStock;
 }
-Car::operator bool()  { // cast explicit
-    return  this->OnStock;
+Car::operator bool()  {
+    return  this->onStock;
 }
 
 //=====================================================================================================================
@@ -536,24 +555,24 @@ class Expense{
 private:
     const int idExpense;
     static int totalNumberOfExpenses;
-//    static double totalSpentByAllDealerships;
     char* name;
     double cost;
     bool onGoing;
     int idDealership;
 
 public:
-    char* getName() const;
-    double getCost();
-    bool getOnGoing();
-    int getIdDealership();
+    const char* getName() const;
+    double getCost() const;
+    bool getOnGoing() const;
+    int getIdDealership() const;
     int getId() const;
 
-    void setName(char* Name);
+    void setName(char* name);
     void setCost(float Cost);
     void setIdDealership(int idDealership);
     void changePlan();
 
+    // Functionalitate Expense cu care se verifica daca aceasta este o cheltuiala care se reinnoieste
     bool shouldBePayed();
 
     Expense();
@@ -568,14 +587,13 @@ public:
     bool operator <(const Expense &obj);
     friend ostream& operator <<(ostream& out, const Expense& c1);  // ??????
     friend istream& operator >>(istream& in, Expense& c1);
-//    Expense& operator [](int);
     Expense operator+(double addCost);
     friend Expense operator+(double addCost, Expense E);
     Expense operator +(const Expense& obj);
     Expense operator -(const Expense& obj);
-    Expense operator++();
+    Expense& operator++();
     Expense operator++(int);
-    operator double() const ; // sa nu se modifice this
+    operator double() const ;
     operator double();
 };
 
@@ -622,22 +640,25 @@ Expense::~Expense(){
         this->name = NULL;
     }
     totalNumberOfExpenses--;
+    this->cost = 0;
+    this->onGoing = 0;
+    this->idDealership = -1;
 }
 
 bool Expense::shouldBePayed() {
     return onGoing == 1 ? true : false;
 }
 
-char* Expense::getName() const{
+const char* Expense::getName() const{
     return this->name;
 };
-double Expense::getCost(){
+double Expense::getCost()const{
     return this->cost;
 };
-bool Expense::getOnGoing(){
+bool Expense::getOnGoing()const{
     return this->onGoing;
 };
-int Expense::getIdDealership(){
+int Expense::getIdDealership()const{
     return this->idDealership;
 }
 int Expense::getId() const{
@@ -662,14 +683,15 @@ void Expense::setIdDealership(int idDealership) {
 }
 
 ostream& operator <<(ostream &out, const Expense &exp){
-    out<<"ID: "<<exp.idExpense<<endl<<"IdDealership: "<<exp.idDealership<<endl<<"Name: "<<exp.name<<endl<<"Cost: "<<exp.cost<<endl<<"Status: "<<exp.onGoing<<endl;
+    out<<"ID: "<<exp.idExpense<<endl<<"IdDealership: "<<exp.idDealership<<endl<<"name: "<<exp.name<<endl<<"Cost: "<<exp.cost<<endl<<"Status: "<<exp.onGoing<<endl;
 
     return out;
 }
 istream& operator >>(istream& in, Expense& exp){
     cout << "Expense name: ";
     char aux[100];
-    in >> aux;
+    in.get();
+    in.getline(aux, 100);
     if(exp.name != NULL){
         delete[] exp.name;
     }
@@ -753,34 +775,24 @@ Expense Expense::operator-(const Expense& obj){
     E.onGoing = (this->onGoing == 0 || obj.onGoing == 0) ? 0 : 1;
     return E;
 }
-Expense Expense::operator++(){ /// incrementare prefixata (Adauga un element in multime)
+Expense& Expense::operator++(){ // incrementare prefixata
     this->cost++;
     return *this;
 }
-Expense Expense::operator++(int){ /// incrementare postfixata (Adauga un element in multime)
+Expense Expense::operator++(int){ // incrementare postfixata
     Expense B(*this);
     this->cost++;
     return B;
 }
-Expense::operator double() const { // cast explicit
+Expense::operator double() const {
     return  this->cost;
 }
-Expense::operator double()  { // cast explicit
+Expense::operator double()  {
     return  this->cost;
 }
 
 
 vector<Expense*> Expenses;
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -794,17 +806,22 @@ private:
     char importance;
     vector<string> expenses;
 public:
-    float getSalary();
-    int getIdDealership();
+    // declarari getteri
+    float getSalary() const;
+    int getIdDealership() const;
     int getId() const;
-    string getName();
+    string getName() const;
 
+    // declarari setteri
     void setSalary(float salary);
     void setIdDealership(int idDealership);
 
+    // functionalitatile din Employee cu care aflam daca un angajat trebuie concediat si
+    // aflam salariul ramas dupa platirea tuturor cheltuielilor
     string shouldGetFired();
     float getRealSalary();
 
+    // declarare constructori si destructor
     Employee();
     Employee(string name, int yearsWorked, float salary);
     Employee(string name, string address, int age);
@@ -812,6 +829,8 @@ public:
     Employee(const Employee& obj);
     ~Employee();
 
+
+    // declarari suprascrieri operatori
     Employee& operator =(const Employee &obj);
     friend ostream& operator <<(ostream& out, const Employee& c1);  // ??????
     friend istream& operator >>(istream& in, Employee& c1);
@@ -822,12 +841,12 @@ public:
     friend Employee operator+(int add, Employee E);
     Employee operator +(const Employee& obj);
     Employee operator -(const Employee& obj);
-    Employee operator++();
+    Employee& operator++();
     Employee operator++(int);
-    operator float() const;
-    operator float();
+    operator float() const; // implicit, sa nu se poata schimba this
+    operator float(); // explicit
     Employee operator +(const Expense& obj);
-    friend const Employee operator+(const Expense&, const Employee&);
+    friend Employee operator+(const Expense&, const Employee&);
 };
 
 Employee::Employee():idEmployee(numberOfEmployees++){
@@ -886,18 +905,26 @@ Employee::Employee(const Employee& obj):idEmployee(numberOfEmployees++){
 }
 Employee::~Employee(){
     numberOfEmployees--;
+    this->name.clear();
+    this->address.clear();
+    this->age = 0;
+    this->yearsWorked = 0;
+    this->idDealership = -1;
+    this->height = 0;
+    this->salary = 0;
+//    this->expenses.clear();
 }
 
-float Employee::getSalary(){
+float Employee::getSalary() const {
     return this->salary;
 }
-int Employee::getIdDealership(){
+int Employee::getIdDealership() const {
     return this->idDealership;
 };
 int Employee::getId() const{
     return this->idEmployee;
 }
-string Employee::getName(){
+string Employee::getName() const {
     return this->name;
 }
 
@@ -905,10 +932,11 @@ void Employee::setSalary(float salary){
     this->salary = salary;
 };
 void Employee::setIdDealership(int idDealership){
+    cout<<"ID DEALERSHIPPPPPPPPPPPPPPPPPPPPP: "<<idDealership<<endl;
     this->idDealership = idDealership;
 }
 
-string Employee::shouldGetFired(){
+string Employee::shouldGetFired(){  // daca este un angajat cu o importanta mica si cu un salariu relativ mare, trebuie concediat
     if(this->importance > 'c' && this->salary > 2500 && this->yearsWorked < 5){
         return "This employee should get fired";
     } else if (this->importance > 'b' && this->salary > 4000 && this->yearsWorked < 8) {
@@ -929,8 +957,8 @@ float Employee::getRealSalary(){
 }
 
 ostream& operator <<(ostream &out, const Employee &emp){
-    out<<"ID: "<<emp.idEmployee<<endl<<"IdDealership: "<<emp.idDealership<<endl<<"Name: "<<emp.name<<endl<<"Address: "<<emp.address<<endl<<"Age: "<<emp.age<<endl<<"Years of work: "<<emp.yearsWorked<<endl<<
-       "Height: "<<emp.height<<endl<<"Salary: "<<emp.salary<<endl<<"Importance: "<<emp.importance<<endl;
+    out<<"ID: "<<emp.idEmployee<<endl<<"IdDealership: "<<emp.idDealership<<endl<<"name: "<<emp.name<<endl<<"Address: "<<emp.address<<endl<<"Age: "<<emp.age<<endl<<"Years of work: "<<emp.yearsWorked<<endl<<
+       "Height: "<<emp.height<<endl<<"Salary: "<<emp.salary<<"$"<<endl<<"Importance: "<<emp.importance<<endl;
     cout<<"Expenses: ";
     for(int i=0; i<emp.expenses.size(); i++){
         cout<<emp.expenses[i]<<" ";
@@ -939,7 +967,7 @@ ostream& operator <<(ostream &out, const Employee &emp){
     return out;
 }
 istream& operator >>(istream& in, Employee& emp){
-    cout<<"Name: ";
+    cout<<"name: ";
     in >> emp.name;
 
     cout<<"Address: ";
@@ -962,7 +990,7 @@ istream& operator >>(istream& in, Employee& emp){
 
     return in;
 }
-string Employee::operator [](int i){
+string Employee::operator [](int i){ // returneaza a i-a cheltuiala a angajatului respectiv
     if(i < 0)  throw runtime_error("index invalid");
     if(i >= this->expenses.size()) throw runtime_error("index invalid");
     return this->expenses[i];
@@ -1026,7 +1054,12 @@ Employee Employee::operator+(const Employee& obj){
     E.height = this->height + obj.height;
     E.salary = this->salary + obj.salary;
     E.importance = this->importance < obj.importance ? this->importance : obj.importance;
-
+    for(int i=0; i<this->expenses.size(); i++){
+        E.expenses.push_back(this->expenses[i]);
+    }
+    for(int i=0; i<obj.expenses.size(); i++){
+        E.expenses.push_back(obj.expenses[i]);
+    }
     return E;
 }
 Employee Employee::operator-(const Employee &obj) {
@@ -1052,7 +1085,7 @@ Employee Employee::operator-(const Employee &obj) {
     E.importance = this->importance < obj.importance ? obj.importance : this->importance;
     return E;
 }
-Employee Employee::operator++(){ /// incrementare prefixata (Adauga un element in multime)
+Employee& Employee::operator++(){ /// incrementare prefixata (Adauga un element in multime)
     this->age++;
     this->yearsWorked++;
     this->height++;
@@ -1078,7 +1111,7 @@ Employee Employee::operator+(const Expense& C){
     E.expenses.push_back(C.getName());
     return E;
 }
-const Employee operator+(const Expense& C, const Employee& E)
+Employee operator+(const Expense& C, const Employee& E)
 {
     Employee newE(E);
     newE.expenses.push_back(C.getName());
@@ -1086,61 +1119,58 @@ const Employee operator+(const Expense& C, const Employee& E)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 vector<Car*> Cars;
 vector<Employee*> Employees;
+
 
 class Dealership{
 private:
     const int idDealership;
     static int numberOfDealerships;
-    string Name, Location;
-    vector<Car*> AvailableCars;
-    vector<Employee*> Employees;
-    vector<Expense*> Expenses;
-    float CarsWorth, EmployeeSalariesTotal;
+    string name, location;
+    vector<Car*>availableCars;
+    vector<Employee*> employees;
+    vector<Expense*> expenses;
+    float carsWorth, employeeSalariesTotal;
     double totalSpentOnExpenses;
 public:
+    // declarare constructori si destructor
     Dealership();
-    Dealership(string Name, string Location);
-    Dealership(vector<Car> AvailableCars);
-    Dealership(string Name, string Location, vector<Car> AvailableCars, vector<Employee> Employees, vector<Expense> Expenses);
+    Dealership(string name, string location);
+    Dealership(vector<Car>availableCars);
+    Dealership(string name, string location, vector<Car>availableCars, vector<Employee> Employees, vector<Expense> Expenses);
     Dealership(const Dealership& obj);
     ~Dealership();
 
+    // functionalitatile din Dealership. Cu prima formam un vector de pointeri la obiecte Car ce au proprietatile din parametrii
+    // iar a doua ne intoarce cea mai rapida masina din dealership-ul curent
     vector<Car*> searchCar(char* carName, char* engineLayout, float minPrice, float maxPrice, int minHP, int maxHP, int minYr, int maxYr, int minKm, int maxKm, string comb);
-
-    // getters
-    const int getIdDealership();
-    string getName();
-    string getLocation();
-    vector<Car*> getAvailableCars();
-    vector<Employee*> getEmployees();
-    vector<Expense*> getExpenses();
-    float getCarsWorth();
-    float getEmployeeSalariesTotal();
-    double getTotalSpentOnExpenses();
     Car fastestCar();
 
+    // getters
+    const int getIdDealership() const;
+    string getName() const;
+    string getLocation() const;
+    float getCarsWorth() const;
+    float getEmployeeSalariesTotal() const;
+    double getTotalSpentOnExpenses() const;
+
     // setters
-    void setName(string Name);
-    void setLocation(string Location);
-    void addCarToAvailableCars(Car* car);  // e considerat un setter ????????????????????
+    void setName(string name);
+    void setLocation(string location);
+    void addCarToAvailableCars(Car* car);
     void addEmployee(Employee* emp);
     void addExpense(Expense* exp);
     void setTotalExp(double cost);
+    void setCarsWorth(float worth);
+    void setEmployeeSalary(float amount);
+    void setExpenseCost(double cost);
+    void setAvailableCars(int i);
+    void setEmployees(int i);
+    void setExpenses(int i);
 
-    Dealership& operator =(const Dealership &obj);
+    // supraincarcare operatori
+    Dealership& operator =(const Dealership& obj);
     friend ostream& operator <<(ostream& out, const Dealership& d1);  // ??????
     friend istream& operator >>(istream& in, Dealership& d1);
     bool operator ==(const Dealership &obj);
@@ -1149,179 +1179,218 @@ public:
     Dealership operator+(int addWorth);
     friend Dealership operator+(int addWorth, Dealership D);
     const Dealership operator -(const Dealership &obj);
-    Dealership operator++();
+    Dealership& operator++();
     Dealership operator++(int);
-    operator string() const ; // sa nu se modifice this
-    operator string();
+    operator string() const ; // implicit, sa nu se modifice this
+    operator string(); // explicit
 };
 
 Dealership::Dealership():idDealership(numberOfDealerships++){
-    this->Name = "Unknown";
-    this->Location = "Unknown";
-    this->CarsWorth = 0;
-    this->EmployeeSalariesTotal = 0;
-    this->AvailableCars = {};
-    this->Employees = {};
-    this->Expenses = {};
+    this->name = "Unknown";
+    this->location = "Unknown";
+    this->carsWorth = 0;
+    this->employeeSalariesTotal = 0;
+    this->availableCars = {};
+    this->employees = {};
+    this->expenses = {};
     this->totalSpentOnExpenses = 0;
 }
 Dealership::Dealership(string name, string location):idDealership(numberOfDealerships++){
-    this->Name = name;
-    this->Location = location;
-    this->CarsWorth = 0;
-    this->EmployeeSalariesTotal = 0;
-    this->AvailableCars = {};
-    this->Employees = {};
-    this->Expenses = {};
+    this->name = name;
+    this->location = location;
+    this->carsWorth = 0;
+    this->employeeSalariesTotal = 0;
+    this->availableCars = {};
+    this->employees = {};
+    this->expenses = {};
     this->totalSpentOnExpenses = 0;
 }
-Dealership::Dealership(vector<Car> AvailableCars):idDealership(numberOfDealerships++){
-    this->Name = "Unknown";
-    this->Location = "Unknown";
-    this->CarsWorth = 0;
-    this->EmployeeSalariesTotal = 0;
-    for(int i=0; i<AvailableCars.size(); i++){
-        this->CarsWorth += AvailableCars[i].getPrice();
-        this->AvailableCars.push_back(&AvailableCars[i]);
+Dealership::Dealership(vector<Car>availableCars):idDealership(numberOfDealerships++){
+    this->name = "Unknown";
+    this->location = "Unknown";
+    this->carsWorth = 0;
+    this->employeeSalariesTotal = 0;
+    for(int i=0; i<availableCars.size(); i++){
+        this->carsWorth +=availableCars[i].getPrice();
+        this->availableCars.push_back(&availableCars[i]);
     }
-    this->Employees = {};
-    this->Expenses = {};
+    this->employees = {};
+    this->expenses = {};
     this->totalSpentOnExpenses = 0;
 }
-Dealership::Dealership(string Name, string Location, vector<Car> AvailableCars, vector<Employee> Employees, vector<Expense> Expenses):idDealership(numberOfDealerships++){
-    this->Name = Name;
-    this->Location = Location;
-    this->AvailableCars = {};
-    this->CarsWorth = 0;
-    this->EmployeeSalariesTotal = 0;
+Dealership::Dealership(string name, string location, vector<Car>availableCars, vector<Employee> employees, vector<Expense> expenses):idDealership(numberOfDealerships++){
+    this->name = name;
+    this->location = location;
+    this->availableCars = {};
+    this->carsWorth = 0;
+    this->employeeSalariesTotal = 0;
     this->totalSpentOnExpenses = 0;
-    for(int i=0; i<AvailableCars.size(); i++){
-        this->CarsWorth += AvailableCars[i].getPrice();
-        this->AvailableCars.push_back(&AvailableCars[i]);
+    for(int i=0; i<availableCars.size(); i++){
+        this->carsWorth +=availableCars[i].getPrice();
+        this->availableCars.push_back(&availableCars[i]);
     }
     for(int i=0; i<Employees.size(); i++){
-        this->EmployeeSalariesTotal+= Employees[i].getSalary();
-        this->Employees.push_back(&Employees[i]);
+        this->employeeSalariesTotal+= employees[i].getSalary();
+        this->employees.push_back(&employees[i]);
     }
     for(int i=0; i<Expenses.size(); i++){
-        this->totalSpentOnExpenses+= Expenses[i].getCost();
-        this->Expenses.push_back(&Expenses[i]);
+        this->totalSpentOnExpenses+= expenses[i].getCost();
+        this->expenses.push_back(&expenses[i]);
     }
 }
 Dealership::Dealership(const Dealership& obj):idDealership(numberOfDealerships++){
-    this->Name = obj.Name;
-    this->Location = obj.Location;
-    this->CarsWorth = obj.CarsWorth;
-    this->EmployeeSalariesTotal = obj.EmployeeSalariesTotal;
+    this->name = obj.name;
+    this->location = obj.location;
+    this->carsWorth = obj.carsWorth;
+    this->employeeSalariesTotal = obj.employeeSalariesTotal;
     this->totalSpentOnExpenses = obj.totalSpentOnExpenses;
-    for(int i=0; i<obj.AvailableCars.size(); i++){
-        this->AvailableCars.push_back(obj.AvailableCars[i]);
+    for(int i=0; i<obj.availableCars.size(); i++){
+        this->availableCars.push_back(obj.availableCars[i]);
     }
-    for(int i=0; i<obj.Employees.size(); i++){
-        this->Employees.push_back(obj.Employees[i]);
+    for(int i=0; i<obj.employees.size(); i++){
+        this->employees.push_back(obj.employees[i]);
     }
-    for(int i=0; i<obj.Expenses.size(); i++){
-        this->Expenses.push_back(obj.Expenses[i]);
+    for(int i=0; i<obj.expenses.size(); i++){
+        this->expenses.push_back(obj.expenses[i]);
     }
 }
 Dealership::~Dealership(){
     numberOfDealerships--;
+    this->name.clear();
+    this->location.clear();
+//    this->availableCars.clear();
+//    this->expenses.clear();
+//    this->employees.clear();
+    this->carsWorth = 0;
+    this->employeeSalariesTotal = 0;
+    this->totalSpentOnExpenses = 0;
+    string name, location;
+    vector<Car*>availableCars;
+    vector<Employee*> employees;
+    vector<Expense*> expenses;
+    float carsWorth, employeeSalariesTotal;
+    double totalSpentOnExpenses;
 }
 
+// functionalitate care cauta o anumita masina pe baza parametrilor transmisi
 vector<Car*> Dealership::searchCar(char* carName, char* engineLayout, float minPrice, float maxPrice, int minHP, int maxHP, int minYr, int maxYr, int minKm, int maxKm, string comb){
     vector<Car*> res = {};
 
-    for(int i=0; i<this->AvailableCars.size(); i++){
-        Car carObj = *this->AvailableCars[i];
+    for(int i=0; i<this->availableCars.size(); i++){
+        Car carObj = *this->availableCars[i];
         if(carObj.getEngineLayout() == engineLayout && carObj.getPrice() >= minPrice && carObj.getPrice() <= maxPrice
            && carObj.getYear() >= minYr && carObj.getYear() <= maxYr && carObj.getKm() >= minKm && carObj.getKm() <= maxKm
            && carObj.getCombustible() == comb && carObj.getHorsePower() >= minHP && carObj.getHorsePower() <= maxHP) {
-            res.push_back(this->AvailableCars[i]);
+            res.push_back(this->availableCars[i]);
         }
     }
     return res;
 }
 
-const int Dealership::getIdDealership() {
-    return this->idDealership;
+const int Dealership::getIdDealership() const {
+    return this->idDealership+1;
 }
-string Dealership::getName(){
-    return this->Name;
+string Dealership::getName() const {
+    return this->name;
 }
-string Dealership::getLocation(){
-    return this->Location;
+string Dealership::getLocation() const {
+    return this->location;
 }
-vector<Car*> Dealership::getAvailableCars() {
-    return this->AvailableCars;
+
+float Dealership::getCarsWorth() const {
+    return this->carsWorth;
 }
-vector<Employee*> Dealership::getEmployees() {
-    return this->Employees;
+float Dealership::getEmployeeSalariesTotal() const {
+    return this->employeeSalariesTotal;
 }
-vector<Expense*> Dealership::getExpenses(){
-    return this->Expenses;
-}
-float Dealership::getCarsWorth() {
-    return this->CarsWorth;
-}
-float Dealership::getEmployeeSalariesTotal(){
-    return this->EmployeeSalariesTotal;
-}
-double Dealership::getTotalSpentOnExpenses() {
+double Dealership::getTotalSpentOnExpenses() const {
     return this->totalSpentOnExpenses;
 }
 
-void Dealership::setName(string Name) {
-    this->Name = Name;
+void Dealership::setName(string name) {
+    this->name = name;
 }
-void Dealership::setLocation(string Location) {
-    this->Location = Location;
+void Dealership::setLocation(string location) {
+    this->location = location;
+}
+void Dealership::setCarsWorth(float worth) {
+    this->carsWorth = worth;
+}
+void Dealership::setEmployeeSalary(float amount) {
+    this->employeeSalariesTotal = amount;
+}
+void Dealership::setExpenseCost(double cost) {
+    this->totalSpentOnExpenses = cost;
 }
 void Dealership::addCarToAvailableCars(Car* car) {
-    cout<<"CARRRRRRRRRRRRRRRRRRR: ";
     cout<<car<<endl;
-    this->AvailableCars.push_back(car);
-    this->CarsWorth += car->getPrice();
+    this->availableCars.push_back(car);
+    this->carsWorth += car->getPrice();
 }
 void Dealership::addEmployee(Employee* emp) {
-    this->Employees.push_back(emp);
-    this->EmployeeSalariesTotal += emp->getSalary();
+    this->employees.push_back(emp);
+    this->employeeSalariesTotal += emp->getSalary();
 }
 void Dealership::setTotalExp(double cost){
     this->totalSpentOnExpenses += cost;
 }
 void Dealership::addExpense(Expense* exp) {
-    this->Expenses.push_back(exp);
+    this->expenses.push_back(exp);
     this->setTotalExp(exp->getCost());
 }
+void Dealership::setEmployees(int i) {
+    for(int j=0; j<this->employees.size(); j++){
+        if(this->employees[j]->getId() == i){
+            this->employees.erase(this->employees.begin()+j);
+            break;
+        }
+    }
+}
+void Dealership::setAvailableCars(int i) {
+    for(int j=0; j<this->availableCars.size(); j++){
+        if(this->availableCars[j]->getId() == i){
+            this->availableCars.erase(this->availableCars.begin()+j);
+            break;
+        }
+    }
+}
+void Dealership::setExpenses(int i) {
+    for(int j=0; j<this->expenses.size(); j++){
+        if(this->expenses[j]->getId() == i){
+            this->expenses.erase(this->expenses.begin()+j);
+            break;
+        }
+    }
+}
 
-Car Dealership::fastestCar(){
+Car Dealership::fastestCar(){ // caut masina cu cei mai multi HP dintre cele detine de dealership
     int horsePower = 0;
     Car fastestCar;
-    for(int i=0; i<this->AvailableCars.size(); i++){
-        if(this->AvailableCars[i]->getHorsePower() > horsePower){
-            horsePower = this->AvailableCars[i]->getHorsePower();
-            fastestCar = *this->AvailableCars[i];
+    for(int i=0; i<this->availableCars.size(); i++){
+        if(this->availableCars[i]->getHorsePower() > horsePower){
+            horsePower = this->availableCars[i]->getHorsePower();
+            fastestCar = *this->availableCars[i];
         }
     }
     return fastestCar;
 }
 
 ostream& operator <<(ostream &out, const Dealership &ds){
-    out<<"ID: "<<ds.idDealership<<endl<<"Name: "<<ds.Name<<endl<<"Location: "<<ds.Location<<endl<<"Worth in cars: "<<ds.CarsWorth<<endl<<"Total of money spent on employee salaries: "<<ds.EmployeeSalariesTotal<<endl<<"Total spent on expenses: "<<ds.totalSpentOnExpenses<<endl;
+    out<<"ID: "<<ds.idDealership<<endl<<"Name: "<<ds.name<<endl<<"Location: "<<ds.location<<endl<<"Worth in cars: "<<ds.carsWorth<<endl<<"Total of money spent on employee salaries: "<<ds.employeeSalariesTotal<<endl;
 
     cout<<"Available Cars: "<<endl;
-    for(int i=0; i<ds.AvailableCars.size(); i++){
-        out<<*ds.AvailableCars[i]<<endl;
+    for(int i=0; i<ds.availableCars.size(); i++){
+        out<<*ds.availableCars[i]<<endl;
     }
 
     cout<<"Employees: "<<endl;
-    for(int i=0; i<ds.Employees.size(); i++){
-        out<<*ds.Employees[i]<<endl;
+    for(int i=0; i<ds.employees.size(); i++){
+        out<<*ds.employees[i]<<endl;
     }
 
     cout<<"Expenses: "<<endl;
-    for(int i=0; i<ds.Expenses.size(); i++){
-        out<<*ds.Expenses[i]<<endl;
+    for(int i=0; i<ds.expenses.size(); i++){
+        out<<*ds.expenses[i]<<endl;
     }
 
     return out;
@@ -1329,12 +1398,13 @@ ostream& operator <<(ostream &out, const Dealership &ds){
 istream& operator >>(istream& in, Dealership& ds){
 
     cout << "Nume: ";
-    in>>ds.Name;
+    in>>ds.name;
 
     cout << "Location: ";
-    in>>ds.Location;
+    in>>ds.location;
 
 
+    // se adauga masini, angajati, cheltuieli dealership-ului
     string inp;
     cout<<"Mai adaugati ceva acestui dealership? DA/NU: "; cin>>inp;
     while(inp == "DA") {
@@ -1353,8 +1423,8 @@ istream& operator >>(istream& in, Dealership& ds){
                         cin >> inp;
                         if (inp == "DA") {
                             Cars[i]->setIdDealership(ds.getIdDealership());
-                            ds.AvailableCars.push_back(Cars[i]);
-                            ds.CarsWorth += Cars[i]->getPrice();
+                            ds.availableCars.push_back(Cars[i]);
+                            ds.carsWorth += Cars[i]->getPrice();
                             ok = 1;
                             break;
                         }
@@ -1365,19 +1435,19 @@ istream& operator >>(istream& in, Dealership& ds){
                     Car C;
                     cin >> C;
                     C.setIdDealership(ds.getIdDealership());
-                    ds.AvailableCars.push_back(new Car);
-                    *ds.AvailableCars.back() = C;
-                    ds.CarsWorth += C.getPrice();
-                    Cars.push_back(ds.AvailableCars.back());
+                    ds.availableCars.push_back(new Car);
+                    *ds.availableCars.back() = C;
+                    ds.carsWorth += C.getPrice();
+                    Cars.push_back(ds.availableCars.back());
                 }
             } else {
                 Car C;
                 cin >> C;
                 C.setIdDealership(ds.getIdDealership());
-                ds.AvailableCars.push_back(new Car);
-                *ds.AvailableCars.back() = C;
-                ds.CarsWorth += C.getPrice();
-                Cars.push_back(ds.AvailableCars.back());
+                ds.availableCars.push_back(new Car);
+                *ds.availableCars.back() = C;
+                ds.carsWorth += C.getPrice();
+                Cars.push_back(ds.availableCars.back());
             }
         }
 
@@ -1390,13 +1460,13 @@ istream& operator >>(istream& in, Dealership& ds){
                 bool ok = 0;
                 for (int i = 0; i < Employees.size(); i++) {
                     if(Employees[i]->getIdDealership() == -1) {
-                        cout << Employees[i];
+                        cout << *Employees[i];
                         cout << "Este aceasta persoana dorita? DA/NU: ";
                         cin >> inp;
                         if (inp == "DA") {
                             Employees[i]->setIdDealership(ds.getIdDealership());
-                            ds.Employees.push_back(Employees[i]);
-                            ds.EmployeeSalariesTotal += Employees[i]->getSalary();
+                            ds.employees.push_back(Employees[i]);
+                            ds.employeeSalariesTotal += Employees[i]->getSalary();
                             ok = 1;
                             break;
                         }
@@ -1407,19 +1477,19 @@ istream& operator >>(istream& in, Dealership& ds){
                     Employee A;
                     cin >> A;
                     A.setIdDealership(ds.getIdDealership());
-                    ds.Employees.push_back(new Employee);
-                    *ds.Employees.back() = A;
-                    ds.EmployeeSalariesTotal += A.getSalary();
-                    Employees.push_back(ds.Employees.back());
+                    ds.employees.push_back(new Employee);
+                    *ds.employees.back() = A;
+                    ds.employeeSalariesTotal += A.getSalary();
+                    Employees.push_back(ds.employees.back());
                 }
             } else {
                 Employee A;
                 cin >> A;
                 A.setIdDealership(ds.getIdDealership());
-                ds.Employees.push_back(new Employee);
-                *ds.Employees.back() = A;
-                ds.EmployeeSalariesTotal += A.getSalary();
-                Employees.push_back(ds.Employees.back());
+                ds.employees.push_back(new Employee);
+                *ds.employees.back() = A;
+                ds.employeeSalariesTotal += A.getSalary();
+                Employees.push_back(ds.employees.back());
             }
         }
 
@@ -1437,7 +1507,7 @@ istream& operator >>(istream& in, Dealership& ds){
                         cin >> inp;
                         if (inp == "DA") {
                             Expenses[i]->setIdDealership(ds.getIdDealership());
-                            ds.Expenses.push_back(Expenses[i]);
+                            ds.expenses.push_back(Expenses[i]);
                             ds.totalSpentOnExpenses += Expenses[i]->getCost();
                             ok = 1;
                             break;
@@ -1449,19 +1519,19 @@ istream& operator >>(istream& in, Dealership& ds){
                     Expense E;
                     cin >> E;
                     E.setIdDealership(ds.getIdDealership());
-                    ds.Expenses.push_back(new Expense);
-                    *ds.Expenses.back() = E;
+                    ds.expenses.push_back(new Expense);
+                    *ds.expenses.back() = E;
                     ds.totalSpentOnExpenses += E.getCost();
-                    Expenses.push_back(ds.Expenses.back());
+                    Expenses.push_back(ds.expenses.back());
                 }
             } else {
                 Expense E;
                 cin >> E;
                 E.setIdDealership(ds.getIdDealership());
-                ds.Expenses.push_back(new Expense);
-                *ds.Expenses.back() = E;
+                ds.expenses.push_back(new Expense);
+                *ds.expenses.back() = E;
                 ds.totalSpentOnExpenses += E.getCost();
-                Expenses.push_back(ds.Expenses.back());
+                Expenses.push_back(ds.expenses.back());
             }
         }
         cout<<"Mai adaugati ceva acestui dealership? DA/NU: "; cin>>inp;
@@ -1473,126 +1543,126 @@ Dealership& Dealership::operator =(const Dealership &obj){
 
     if(this != &obj){
 
-        this->Name = obj.Name;
-        this->Location = obj.Location;
-        this->CarsWorth = obj.CarsWorth;
-        this->EmployeeSalariesTotal = obj.EmployeeSalariesTotal;
+        this->name = obj.name;
+        this->location = obj.location;
+        this->carsWorth = obj.carsWorth;
+        this->employeeSalariesTotal = obj.employeeSalariesTotal;
 
-        this->AvailableCars.clear();
-        for(int i=0; i<obj.AvailableCars.size(); i++){
-            this->AvailableCars.push_back(obj.AvailableCars[i]);
+        this->availableCars.clear();
+        for(int i=0; i<obj.availableCars.size(); i++){
+            this->availableCars.push_back(obj.availableCars[i]);
         }
 
-        this->Employees.clear();
-        for(int i=0; i<obj.Employees.size(); i++){
-            this->Employees.push_back(obj.Employees[i]);
+        this->employees.clear();
+        for(int i=0; i<obj.employees.size(); i++){
+            this->employees.push_back(obj.employees[i]);
         }
 
-        this->Expenses.clear();
-        for(int i=0; i<obj.Expenses.size(); i++){
-            this->Expenses.push_back(obj.Expenses[i]);
+        this->expenses.clear();
+        for(int i=0; i<obj.expenses.size(); i++){
+            this->expenses.push_back(obj.expenses[i]);
         }
     }
     return *this;
 
 }
 bool Dealership::operator ==(const Dealership &obj){           // DE SCHIMBATTTTTTTTTTTTTTTTT??????????????????
-    if(this->Name == obj.Name && this->Location == obj.Location)
+    if(this->name == obj.name && this->location == obj.location)
         return true;
     return false;
 
 }
 bool Dealership::operator <(const Dealership &obj){
-    cout<<this->CarsWorth<<" "<<obj.CarsWorth<<" "<<this->EmployeeSalariesTotal<<" "<<obj.EmployeeSalariesTotal<<endl;
-    if((this->CarsWorth < obj.CarsWorth && this->EmployeeSalariesTotal <= obj.EmployeeSalariesTotal) ||
-       (this->CarsWorth <= obj.CarsWorth && this->EmployeeSalariesTotal < obj.EmployeeSalariesTotal))
+    cout<<this->carsWorth<<" "<<obj.carsWorth<<" "<<this->employeeSalariesTotal<<" "<<obj.employeeSalariesTotal<<endl;
+    if((this->carsWorth < obj.carsWorth && this->employeeSalariesTotal <= obj.employeeSalariesTotal) ||
+       (this->carsWorth <= obj.carsWorth && this->employeeSalariesTotal < obj.employeeSalariesTotal))
         return true;
     return false;
 
 }
 Car Dealership::operator [](int i){
     if(i < 0)  throw runtime_error("index invalid");
-    if(i >= this->AvailableCars.size()) throw runtime_error("index invalid");
-    return *this->AvailableCars[i];
+    if(i >= this->availableCars.size()) throw runtime_error("index invalid");
+    return *this->availableCars[i];
 }
 Dealership Dealership::operator+(int addWorth){
     Dealership D(*this);
-    D.CarsWorth += addWorth;
+    D.carsWorth += addWorth;
     return D;
 }
 Dealership operator+(int addWorth, Dealership D){
-    D.CarsWorth += addWorth;
+    D.carsWorth += addWorth;
     return D;
 }
 
 
 const Dealership Dealership::operator-(const Dealership &obj){
     Dealership D;
-    D.Name = this->Name + "-" + obj.Name;
-    D.Location = this->Location;
-    for(int i=0; i<this->AvailableCars.size(); i++){
+    D.name = this->name + "-" + obj.name;
+    D.location = this->location;
+    for(int i=0; i<this->availableCars.size(); i++){
         bool ok = 0;
-        cout<<this->AvailableCars.size()<<" "<<obj.AvailableCars.size()<<endl;
-        for(int j=0; j<obj.AvailableCars.size(); j++){
-            cout<<this->AvailableCars[i]->getId()<<" "<<obj.AvailableCars[j]->getId()<<endl;
-            cout<<(this->AvailableCars[i] == obj.AvailableCars[j])<<endl;
-            if(this->AvailableCars[i] == obj.AvailableCars[j]){
+        cout<<this->availableCars.size()<<" "<<obj.availableCars.size()<<endl;
+        for(int j=0; j<obj.availableCars.size(); j++){
+            cout<<this->availableCars[i]->getId()<<" "<<obj.availableCars[j]->getId()<<endl;
+            cout<<(this->availableCars[i] == obj.availableCars[j])<<endl;
+            if(this->availableCars[i] == obj.availableCars[j]){
                 ok = 1;
                 break;
             }
         }
         if (ok == 0){
-            D.AvailableCars.push_back(this->AvailableCars[i]);
-            D.CarsWorth+=D.AvailableCars.back()->getPrice();
+            D.availableCars.push_back(this->availableCars[i]);
+            D.carsWorth+=D.availableCars.back()->getPrice();
         }
     }
-    for(int i=0; i<this->Employees.size(); i++){
+    for(int i=0; i<this->employees.size(); i++){
         bool ok = 0;
-        for(int j=0; j<obj.Employees.size(); j++){
-            if(this->Employees[i]->getId() == obj.Employees[j]->getId()){
+        for(int j=0; j<obj.employees.size(); j++){
+            if(this->employees[i]->getId() == obj.employees[j]->getId()){
                 ok = 1;
                 break;
             }
         }
         if (ok == 0){
-            D.Employees.push_back(this->Employees[i]);
-            D.EmployeeSalariesTotal += D.Employees.back()->getSalary();
+            D.employees.push_back(this->employees[i]);
+            D.employeeSalariesTotal += D.employees.back()->getSalary();
         }
     }
-    for(int i=0; i<this->Expenses.size(); i++){
+    for(int i=0; i<this->expenses.size(); i++){
         bool ok = 0;
-        for(int j=0; j<obj.Expenses.size(); j++){
-            if(this->Expenses[i]->getId() == obj.Expenses[j]->getId()){
+        for(int j=0; j<obj.expenses.size(); j++){
+            if(this->expenses[i]->getId() == obj.expenses[j]->getId()){
                 ok = 1;
                 break;
             }
         }
         if (ok == 0){
-            D.Expenses.push_back(this->Expenses[i]);
-            D.totalSpentOnExpenses += D.Expenses.back()->getCost();
+            D.expenses.push_back(this->expenses[i]);
+            D.totalSpentOnExpenses += D.expenses.back()->getCost();
         }
     }
     return D;
 }
-Dealership Dealership::operator++(){
-    this->CarsWorth++;
-    this->EmployeeSalariesTotal++;
+Dealership& Dealership::operator++(){
+    this->carsWorth++;
+    this->employeeSalariesTotal++;
     this->totalSpentOnExpenses++;
     return *this;
 }
 Dealership Dealership::operator++(int){
     Dealership B(*this);
-    this->CarsWorth++;
-    this->EmployeeSalariesTotal++;
+    this->carsWorth++;
+    this->employeeSalariesTotal++;
     this->totalSpentOnExpenses++;
     return B;
 }
 Dealership::operator string() const { // cast explicit
-    return  this->Name;
+    return  this->name;
 }
 
 Dealership::operator string()  { // cast explicit
-    return  this->Name;
+    return  this->name;
 }
 
 
@@ -1607,26 +1677,6 @@ vector<Car> searchCar(char* carName = NULL, char* engineLayout = NULL, float min
     vector<Car> res = {};
     for(int i=0; i<Cars.size(); i++) {
         Car carObj = *Cars[i];
-        if(strcmp(carObj.getName(), carName) == 0) cout<<"1"<<endl;
-        else cout<<"0"<<endl;
-        if(strcmp(carObj.getEngineLayout(), engineLayout) == 0) cout<<"1"<<endl;
-        else cout<<"0"<<endl;
-        if(carObj.getPrice() >= minPrice && carObj.getPrice() <= maxPrice) cout<<"1"<<endl;
-        else cout<<"0"<<endl;
-        if(carObj.getYear() >= minYr && carObj.getYear() <= maxYr) cout<<"1"<<endl;
-        else cout<<"0"<<endl;
-        if(carObj.getKm() >= minKm && carObj.getKm() <= maxKm) cout<<"1"<<endl;
-        else cout<<"0"<<endl;
-        if(carObj.getCombustible() == comb) {
-            cout<<carObj.getCombustible()<<" "<<comb<<endl;
-            cout << "1" << endl; }
-        else {
-            cout<<"0"<<endl;
-            cout<<carObj.getCombustible()<<" "<<comb<<endl;
-        }
-        if(carObj.getHorsePower() >= minHP && carObj.getHorsePower() <= maxHP) cout<<"1"<<endl;
-        else cout<<"0"<<endl;
-
         if (strcmp(carObj.getName(), carName) == 0 && strcmp(carObj.getEngineLayout(), engineLayout) == 0 &&
             carObj.getPrice() >= minPrice && carObj.getPrice() <= maxPrice
             && carObj.getYear() >= minYr && carObj.getYear() <= maxYr && carObj.getKm() >= minKm &&
@@ -1656,26 +1706,150 @@ vector<Employee> searchEmployee(string name, float minSalary = 0){
     return res;
 }
 int main() {
-    Employee E("ana", "plopii 20", 20, 4, 1.62, 3000.20, 'a', {});
-    Employee E2("ana", "plopii 20", 20, 4, 1.62, 5000.20, 'a', {});
-    Expense Es("cheltuiala1", 200, 1);
-    Expense Es2("cheltuiala2", 300, 1);
-    Expenses.push_back(&Es);
-    Expenses.push_back(&Es2);
-    cout<<Es+E+Es;
-//    cout<<E.getRealSalary();
-//    float a[2] = {2.5, 3.7};
 //    Car car("m2", "v8", 2000.99, 240, 3, 4, 2, a, 1, "cv");
 //    Car car2("m3", "v", 300000, 430, 2016, 24000, 2, a, 1, "cb");
 //    Car car3;
 //    Dealership D("d1", "dloc", {}, {}, {});
 //    Dealership D2("d2", "dloc2", {car}, {}, {});
-//    Employee E("ana", "plopii 20", 20, 4, 1.62, 3000.20, 'a');
-//    Employee E2("ioana", "centrala", 19, 0, 1.68, 2000, 'c');
+//    Employee E("ana", "plopii 20", 20, 4, 1.62, 3000.20, 'a', {});
+//    Employee E2("ioana", "centrala", 19, 0, 1.68, 2000, 'c', {});
 //    Employee E3;
 //    Expense Es("cheltuiala1", 200, 1);
 //    Expense Es2("cheltuiala2", 300, 1);
 //    Expense Es3;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    Employee E("ana", "plopii 20", 20, 4, 1.62, 3000.20, 'a', {});
+//    Employee E2("ana", "plopii 20", 20, 4, 1.62, 5000.20, 'a', {});
+//    Expense Es("cheltuiala1", 200, 1);
+//    Expense Es2("cheltuiala2", 300, 1);
+//    Expense Es3("cheltuiala3", 300, 1);
+//    Expenses.push_back(&Es);
+//    Expenses.push_back(&Es2);
+//    cout<<E+Es+E2+Es2;
+//    cout<<E+Es3+E2+Es2;
+//    cout<<E2+Es2+E+Es;
+//    cout<<E.getRealSalary();
+//    float a[2] = {2.5, 3.7};
 //    cout<<D2.fastestCar();
 //    cout<<car2.howFastIsThisCar();
 //
@@ -1728,509 +1902,593 @@ int main() {
 //                    cout<<Es<<endl;
 //                    cout<<++Es<<endl;
 
-//    string inp;
-//
-//    while(true) {
-//        cout<<"==================DEALERSHIPS:"<<endl;
-//        for(int i=0; i<Dealerships.size(); i++){
-//            cout<<*Dealerships[i]<<endl;
-//        }
-//        cout<<"==================CarS:"<<endl;
-//        for(int i=0; i<Cars.size(); i++){
-//            cout<<*Cars[i]<<endl;
-//        }
-//        cout<<"==================EmployeeS:"<<endl;
-//        for(int i=0; i<Employees.size(); i++){
-//            cout<<*Employees[i]<<endl;
-//        }
-//        cout<<"==================ExpenseS:"<<endl;
-//        for(int i=0; i<Expenses.size(); i++){\
-//        cout<<*Expenses[i]<<endl;
-//        }
-//        cout<<"Doriti sa creati (1), sa gasiti (2), sa modificati (3), sa stergeti (4) un obiect sau sa terminati (n)? "; cin>>inp;
-//        if (inp == "1") {
-//            cout << "Doriti sa creati un dealership (d), o masina (m), un angajat (a) sau o cheltuiala (c)?";
-//            cin >> inp;
-//            if (inp == "dealership" || inp == "d") {
-//                Dealership D;
-//                cin >> D;
-//                Dealerships.push_back(new Dealership);
-//                *Dealerships.back() = D;
-//            } else if (inp == "masina" || inp == "m") {
-//                Cars.push_back(new Car);
-//                cin >> *Cars.back();
-//                cout << "Adaugati aceasta masina unui dealership? DA/NU: ";
-//                cin >> inp;
-//                if (inp == "DA") {
-//                    cout << endl << "Puneti aceasta masina intr-un dealership existent? DA/NU: ";
-//                    cin >> inp;
-//                    if (inp == "DA") {
-//                        if (Dealerships.size() > 0) {
-//                            cout << endl << "Va rugam alegeti un dealership dintre urmatoarele: " << endl;
-//                            int ok = 0;
-//                            for (int i = 0; i < Dealerships.size(); i++) {
-//                                cout << *Dealerships[i];
-//                                cout << "Este acesta dealership-ul dorit? DA/NU: ";
-//                                cin >> inp;
-//                                if (inp == "DA") {
-//                                    (*Cars.back()).setIdDealership(Dealerships[i]->getIdDealership());
-//                                    Dealerships[i]->addCarToAvailableCars(Cars.back());  // ?????? deoarece Dealerships[i] e un pointer?
-//                                    ok = 1;
-//                                    cout << "Masina creata si adaugata cu succes!" << endl;
-//                                    break;
-//                                }
-//                            }
-//                            if (ok == 0) {
-//                                cout << "Nu a fost gasit dealership-ul dorit. Adaugati unul nou? DA/NU: " << endl;
-//                                cin >> inp;
-//                                if (inp == "DA") {
-//                                    Dealership D;
-//                                    (*Cars.back()).setIdDealership(D.getIdDealership());
-//                                    D.addCarToAvailableCars(Cars.back());
-//                                    cin >> D;
-//                                    Dealerships.push_back(new Dealership);
-//                                    *Dealerships.back() = D;
-//                                    cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
-//                                }
-//                            }
-//                        } else {
-//                            cout << "Nu a fost gasit dealership-ul dorit. Veti crea un dealership nou: " << endl;
-//                            Dealership D;
-//                            (*Cars.back()).setIdDealership(D.getIdDealership());
-//                            D.addCarToAvailableCars(Cars.back());
-//                            cin >> D;
-//                            Dealerships.push_back(new Dealership);
-//                            *Dealerships.back() = D;
-//                            cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
-//                        }
-//                    } else {
-//                        cout << endl << "Veti crea un dealership nou: " << endl;
-//                        Dealership D;
-//                        (*Cars.back()).setIdDealership(D.getIdDealership());
-//                        D.addCarToAvailableCars(Cars.back());
-//                        cin >> D;
-//                        Dealerships.push_back(new Dealership);
-//                        *Dealerships.back() = D;
-//                        cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
-//                    }
-//                } else {
-//                    cout << "Masina creata cu succes!" << endl;
-//                }
-//            } else if (inp == "angajat" || inp == "a") {
-//                Employee A;
-//                cin >> A;
-//                Employees.push_back(new Employee);
-//                *Employees.back() = A;
-//                cout << "Adaugati acest angajat unui dealership? DA/NU: ";
-//                cin >> inp;
-//                if (inp == "DA") {
-//                    cout << endl << "Adaugati acest angajat unui dealership existent? DA/NU: ";
-//                    cin >> inp;
-//                    if (inp == "DA") {
-//                        if (Dealerships.size() > 0) {
-//                            cout << "Va rugam alegeti un dealership dintre urmatoarele: " << endl;
-//                            int ok = 0;
-//                            for (int i = 0; i < Dealerships.size(); i++) {
-//                                cout << *Dealerships[i];
-//                                cout << "Este acesta dealership-ul dorit? DA/NU: ";
-//                                cin >> inp;
-//                                if (inp == "DA") {
-//                                    (*Employees.back()).setIdDealership(Dealerships[i]->getIdDealership());
-//                                    Dealerships[i]->addEmployee(Employees.back());  // ?????? deoarece Dealerships[i] e un pointer?
-////                                    A.setIdDealership(Dealerships[i]->getIdDealership());
-////                                    Dealerships[i]->addEmployee(A);  // ?????? deoarece Dealerships[i] e un pointer?
-//                                    ok = 1;
-//                                    cout << "Angajat creat si adaugat cu succes!" << endl;
-//                                    break;
-//                                }
-//                            }
-//                            if (ok == 0) {
-//                                cout << "Nu a fost gasit dealership-ul dorit. Adaugati unul nou? DA/NU: ";
-//                                cin >> inp;
-//                                if (inp == "DA") {
-//                                    Dealership D;
-////                                    A.setIdDealership(D.getIdDealership());
-////                                    D.addEmployee(*Employees.back());
-//                                    (*Employees.back()).setIdDealership(D.getIdDealership());
-//                                    D.addEmployee(Employees.back());
-//                                    cin >> D;
-//                                    Dealerships.push_back(new Dealership);
-//                                    *Dealerships.back() = D;
-//                                    cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
-//                                }
-//                            }
-//                        } else {
-//                            cout << "Nu a fost gasit dealership-ul dorit. Veti crea un dealership nou: ";
-//                            Dealership D;
-////                            A.setIdDealership(D.getIdDealership());
-////                            D.addEmployee(*Employees.back());
-//                            (*Employees.back()).setIdDealership(D.getIdDealership());
-//                            D.addEmployee(Employees.back());
-//                            cin >> D;
-//                            Dealerships.push_back(new Dealership);
-//                            *Dealerships.back() = D;
-//                            cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
-//                        }
-//                    } else {
-//                        cout << "Veti crea un dealership nou: " << endl;
-//                        Dealership D;
-//                        (*Employees.back()).setIdDealership(D.getIdDealership());
-//                        D.addEmployee(Employees.back());
-//                        cin >> D;
-//                        Dealerships.push_back(new Dealership);
-//                        *Dealerships.back() = D;
-//                        cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
-//                    }
-//                } else {
-//                    cout << "Angajat creat cu succes!" << endl;
-//                }
-//
-//            } else if (inp == "cheltuiala" || inp == "c") {
-//                Expense E;
-//                cin >> E;
-//                Expenses.push_back(new Expense);
-//                *Expenses.back() = E;
-//                cout << "Adaugati aceasta cheltuiala unui dealership? DA/NU: ";
-//                cin >> inp;
-//                if (inp == "DA") {
-//                    cout << endl << "Puneti aceasta cheltuiala intr-un dealership existent? DA/NU: ";
-//                    cin >> inp;
-//                    if (inp == "DA") {
-//                        if (Dealerships.size() > 0) {
-//                            cout << "Va rugam alegeti un dealership dintre urmatoarele: " << endl;
-//                            int ok = 0;
-//                            for (int i = 0; i < Dealerships.size(); i++) {
-//                                cout << *Dealerships[i];
-//                                cout << "Este acesta dealership-ul dorit? DA/NU: ";
-//                                cin >> inp;
-//                                if (inp == "DA") {
-//                                    (*Expenses.back()).setIdDealership(Dealerships[i]->getIdDealership());
-//                                    Dealerships[i]->addExpense(Expenses.back());
-//                                    ok = 1;
-//                                    cout << "Cheltuiala creata si adaugata cu succes!" << endl;
-//                                    break;
-//                                }
-//                            }
-//                            if (ok == 0) {
-//                                cout << "Nu a fost gasit dealership-ul dorit. Adaugati unul nou? DA/NU: ";
-//                                cin >> inp;
-//                                if (inp == "DA") {
-//                                    Dealership D;
-////                                    E.setIdDealership(D.getIdDealership());
-////                                    D.addExpense(*Expenses.back());
-//                                    (*Expenses.back()).setIdDealership(D.getIdDealership());
-//                                    D.addExpense(Expenses.back());
-//                                    cin >> D;
-//                                    Dealerships.push_back(new Dealership);
-//                                    *Dealerships.back() = D;
-//                                    cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
-//                                }
-//                            }
-//                        } else {
-//                            cout << "Nu a fost gasit dealership-ul dorit. Veti crea unul nou: ";
-//                            Dealership D;
-//                            (*Expenses.back()).setIdDealership(D.getIdDealership());
-//                            D.addExpense(Expenses.back());
-//                            cin >> D;
-//                            Dealerships.push_back(new Dealership);
-//                            *Dealerships.back() = D;
-//                            cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
-//                        }
-//                    } else {
-//                        cout << "Veti crea un dealership nou: ";
-//                        Dealership D;
-//                        (*Expenses.back()).setIdDealership(D.getIdDealership());
-//                        D.addExpense(Expenses.back());
-//                        cin >> D;
-//                        Dealerships.push_back(new Dealership);
-//                        *Dealerships.back() = D;
-//                        cout << "Totul a fost adaugata cu succes intr-un dealership nou!" << endl;
-//                    }
-//                } else {
-//                    cout << "Cheltuiala creata cu succes!" << endl;
-//                }
-//            }
-//        } else if (inp == "2") {
-//            int inp2;
-//            cout << "Cautati un dealership (1), o masina (2) sau un angajat (3)?";
-//            cin >> inp2;
-//            switch (inp2) {
-//                case 1: {
-//                    string nume, locatie;
-//                    cout << "Scrieti numele si locatia dealership-ului";
-//                    cin>>nume;
-//                    cin>>locatie;
-//                    vector<Dealership> res = searchDealership(nume, locatie);
-//                    if(res.size()){
-//                        for (int i = 0; i < res.size(); i++) {
-//                            cout << res[i] << endl;
-//                        }
-//                    } else {
-//                        cout << "Nu au fost gasite dealership-uri conform cerintelor.." << endl;
-//                    }
-//                    break;
-//                };
-//                case 2: {
-//                    cout << "Va rugam completati urmatoarele pentru a cauta o masina:" << endl;
-//                    char model[200], engineLayout[200];
-//                    float minP, maxP;
-//                    int minHP, maxHP, minYr, maxYr, minKm, maxKm;
-//                    string combustible;
-//                    cout << "Model: ";
-//                    cin >> model;
-//                    cout << "Layout motor: ";
-//                    cin >> engineLayout;
-//                    cout << "Combustibil: ";
-//                    cin >> combustible;
-//                    cout << "Minim cai putere: ";
-//                    cin >> minHP;
-//                    cout << "Maxim cai putere: ";
-//                    cin >> maxHP;
-//                    cout << "Minim an: ";
-//                    cin >> minYr;
-//                    cout << "Maxim an: ";
-//                    cin >> maxYr;
-//                    cout << "Minim km: ";
-//                    cin >> minKm;
-//                    cout << "Maxim km: ";
-//                    cin >> maxKm;
-//                    cout << "Minim pret: ";
-//                    cin >> minP;
-//                    cout << "Maxim pret: ";
-//                    cin >> maxP;
-//                    vector<Car> res = searchCar(model, engineLayout, minP, maxP, minHP, maxHP, minYr, maxYr, minKm,
-//                                                maxKm, combustible);
-//                    if(res.size() > 0){
-//                        for (int i = 0; i < res.size(); i++) {
-//                            cout << "Masina " << i << ": " << endl << res[i] << endl;
-//                        }
-//                        int carIndex;
-//                        cout << "Scrieti numarul masinii dorite:"; cin >> carIndex;
-//                        cout << res[carIndex] << endl;
-//                    }
-//                    else{
-//                        cout << "Nu s-a putut gasi nicio masina conform cerintelor. Ne pare rau!" << endl;
-//                    }
-//                    break;
-//                };
-//                case 3: {
-//                    string nume;
-//                    float minSalariu;
-//                    cout << "Numele angajatului: ";
-//                    cin >> nume;
-//                    cout << "Doriti sa cautati si dupa salariul minim? DA/NU: ";
-//                    cin >> inp;
-//                    vector<Employee> res = {};
-//                    if (inp == "DA") {
-//                        cout << "Salariu: ";
-//                        cin >> minSalariu;
-//                        res = searchEmployee(nume, minSalariu);
-//                    } else {
-//                        res = searchEmployee(nume, minSalariu);
-//                    }
-//                    if(res.size()){
-//                        for(int i=0; i<res.size(); i++){
-//                            cout<<res[i]<<endl;
-//                        }
-//                    } else {
-//                        cout << "Nu au fost gasiti angajati conform cerintelor.."<<endl;
-//                    }
-//                    break;
-//                };
-//            }
-//        } else if (inp == "3") {
-//            cout << "Doriti sa modificati un dealership (1), o masina (2), un angajat (3) sau o cheltuiala (4)?"
-//                 << endl;
-//            int inp2;
-//            cin >> inp2;
-//            switch (inp2) {
-//                case 1: {
-//                    bool ok = 0;
-//                    for (int i = 0; i < Dealerships.size(); i++) {
-//                        cout << *Dealerships[i] << endl;
-//                        cout << "Este acesta dealership-ul cautat? DA/NU: ";
-//                        cin >> inp;
-//                        if (inp == "DA") {
-//                            cin >> *Dealerships[i];
-//                            ok = 1;
-//                            break;
-//                        }
-//                    }
-//                    if (ok == 0) {
-//                        cout << "Dealership-ul nu a fost gasit." << endl;
-//                    }
-//                    break;
-//                }
-//                case 2: {
-//                    bool ok = 0;
-//                    for (int i = 0; i < Cars.size(); i++) {
-//                        cout << *Cars[i] << endl;
-//                        cout << "Este aceasta masina cautata? DA/NU: ";
-//                        cin >> inp;
-//                        if (inp == "DA") {
-//                            cin >> *Cars[i];
-//                            ok = 1;
-//                            break;
-//                        }
-//                    }
-//                    if (ok == 0) {
-//                        cout << "Masina cautata nu a fost gasita" << endl;
-//                    }
-//                    break;
-//                }
-//                case 3: {
-//                    bool ok = 0;
-//                    for (int i = 0; i < Employees.size(); i++) {
-//                        cout << *Employees[i] << endl;
-//                        cout << "Este acesta angajatul cautat? DA/NU: ";
-//                        cin >> inp;
-//                        if (inp == "DA") {
-//                            cin >> *Employees[i];
-//                            ok = 1;
-//                            break;
-//                        }
-//                    }
-//                    if (ok == 0) {
-//                        cout << "Angajatul nu a fost gasit." << endl;
-//                    }
-//                    break;
-//                }
-//                case 4: {
-//                    bool ok = 0;
-//                    for (int i = 0; i < Expenses.size(); i++) {
-//                        cout << *Expenses[i] << endl;
-//                        cout << "Este acesta cheltuiala cautata? DA/NU: ";
-//                        cin >> inp;
-//                        if (inp == "DA") {
-//                            cin >> *Expenses[i];
-//                            ok = 1;
-//                            break;
-//                        }
-//                    }
-//                    if (ok == 0) {
-//                        cout << "Cheltuiala nu a fost gasita." << endl;
-//                    }
-//                    break;
-//                }
-//                default:
-//                    cout << "Nu ati ales nimic" << endl;
-//                    break;
-//            }
-//        } else if (inp == "4") {
-//            cout << "Doriti sa stergeti un dealership (1), o masina (2), angajat (3) sau cheltuiala (4)?";
-//            int inp2;
-//            cin >> inp2;
-//            switch (inp2) {
-//                case 1: {
-//                    bool ok = 0;
-//                    for (int i = 0; i < Dealerships.size(); i++) {
-//                        cout << *Dealerships[i] << endl;
-//                        cout << "Este acesta dealership-ul cautat? DA/NU: ";
-//                        cin >> inp;
-//                        if (inp == "DA") {
-//                            for(int j=0; j<Cars.size(); j++){
-//                                if(Cars[j]->getIdDealership() == Dealerships[i]->getIdDealership()){
-//                                    Cars[j]->setIdDealership(-1);
-//                                }
-//                            }
-//                            for(int j=0; j<Employees.size(); j++){
-//                                if(Employees[j]->getIdDealership() == Dealerships[i]->getIdDealership()){
-//                                    Employees[j]->setIdDealership(-1);
-//                                }
-//                            }
-//                            for(int j=0; j<Expenses.size(); j++){
-//                                if(Expenses[j]->getIdDealership() == Dealerships[i]->getIdDealership()){
-//                                    Expenses[j]->setIdDealership(-1);
-//                                }
-//                            }
-//                            Dealerships.erase(Dealerships.begin() + i);
-//                            ok = 1;
-//                            break;
-//                        }
-//                    }
-//                    if (ok == 0) {
-//                        cout << "Dealership-ul nu a fost gasit." << endl;
-//                    }
-//                    break;
-//                }
-//                case 2: {
-//                    bool ok = 0;
-//                    for (int i = 0; i < Cars.size(); i++) {
-//                        cout << *Cars[i] << endl;
-//                        cout << "Este aceasta masina cautata? DA/NU: ";
-//                        cin >> inp;
-//                        if (inp == "DA") {
-//                            Cars.erase(Cars.begin() + i);
-//                            ok = 1;
-//                            break;
-//                        }
-//                    }
-//                    if (ok == 0) {
-//                        cout << "Masina cautata nu a fost gasita" << endl;
-//                    }
-//                    break;
-//                }
-//                case 3: {
-//                    bool ok = 0;
-//                    for (int i = 0; i < Employees.size(); i++) {
-//                        cout << *Employees[i] << endl;
-//                        cout << "Este acesta angajatul cautat? DA/NU: ";
-//                        cin >> inp;
-//                        if (inp == "DA") {
-//                            Employees.erase(Employees.begin() + i);
-//                            ok = 1;
-//                            break;
-//                        }
-//                    }
-//                    if (ok == 0) {
-//                        cout << "Angajatul nu a fost gasit." << endl;
-//                    }
-//                    break;
-//                }
-//                case 4: {
-//                    bool ok = 0;
-//                    for (int i = 0; i < Expenses.size(); i++) {
-//                        cout << *Expenses[i] << endl;
-//                        cout << "Este acesta cheltuiala cautata? DA/NU: ";
-//                        cin >> inp;
-//                        if (inp == "DA") {
-//                            Expenses.erase(Expenses.begin() + i);
-//                            ok = 1;
-//                            break;
-//                        }
-//                    }
-//                    if (ok == 0) {
-//                        cout << "Cheltuiala nu a fost gasita." << endl;
-//                    }
-//                    break;
-//                }
-//                default:
-//                    cout << "Nu ati ales nimic" << endl;
-//                    break;
-//            }
-//        } else if(inp == "n"){
-//            break;
-//        } else {
-//            cout << "Vă rugăm să alegeti dintre creare (1), cautare (2), modificare (3) si stergere (4) sau oprire (n)!" << endl;
-//        }
-//    }
-//
-//    cout<<"==================DEALERSHIPS:"<<endl;
-//    for(int i=0; i<Dealerships.size(); i++){
-//        cout<<*Dealerships[i]<<endl;
-//    }
-//    cout<<"==================CarS:"<<endl;
-//    for(int i=0; i<Cars.size(); i++){
-//        cout<<*Cars[i]<<endl;
-//    }
-//    cout<<"==================EmployeeS:"<<endl;
-//    for(int i=0; i<Employees.size(); i++){
-//        cout<<*Employees[i]<<endl;
-//    }
-//    cout<<"==================ExpenseS:"<<endl;
-//    for(int i=0; i<Expenses.size(); i++){\
-//        cout<<*Expenses[i]<<endl;
-//    }
+    string inp;
+
+    while(true) {
+        cout<<"==================DEALERSHIPS:"<<endl;
+        for(int i=0; i<Dealerships.size(); i++){
+            cout<<*Dealerships[i]<<endl;
+        }
+        cout<<"==================CarS:"<<endl;
+        for(int i=0; i<Cars.size(); i++){
+            cout<<*Cars[i]<<endl;
+        }
+        cout<<"==================EmployeeS:"<<endl;
+        for(int i=0; i<Employees.size(); i++){
+            cout<<*Employees[i]<<endl;
+        }
+        cout<<"==================ExpenseS:"<<endl;
+        for(int i=0; i<Expenses.size(); i++){\
+        cout<<*Expenses[i]<<endl;
+        }
+        cout<<"Doriti sa creati (1), sa gasiti (2), sa modificati (3), sa stergeti (4) un obiect sau sa terminati (n)? "; cin>>inp;
+        if (inp == "1") {
+            cout << "Doriti sa creati un dealership (d), o masina (m), un angajat (a) sau o cheltuiala (c)?";
+            cin >> inp;
+            if (inp == "dealership" || inp == "d") {
+                Dealership D;
+                cin >> D;
+                Dealerships.push_back(new Dealership);
+                *Dealerships.back() = D;
+                cout<<"DEALERSHIPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP: "; cout<<D.getIdDealership()<<endl;
+            } else if (inp == "masina" || inp == "m") {
+                Cars.push_back(new Car);
+                cin >> *Cars.back();
+                cout << "Adaugati aceasta masina unui dealership? DA/NU: ";
+                cin >> inp;
+                if (inp == "DA") {
+                    cout << endl << "Puneti aceasta masina intr-un dealership existent? DA/NU: ";
+                    cin >> inp;
+                    if (inp == "DA") {
+                        if (Dealerships.size() > 0) {
+                            cout << endl << "Va rugam alegeti un dealership dintre urmatoarele: " << endl;
+                            int ok = 0;
+                            for (int i = 0; i < Dealerships.size(); i++) {
+                                cout << *Dealerships[i];
+                                cout << "Este acesta dealership-ul dorit? DA/NU: ";
+                                cin >> inp;
+                                if (inp == "DA") {
+                                    (*Cars.back()).setIdDealership(Dealerships[i]->getIdDealership()-1);
+                                    Dealerships[i]->addCarToAvailableCars(Cars.back());  // ?????? deoarece Dealerships[i] e un pointer?
+                                    ok = 1;
+                                    cout << "Masina creata si adaugata cu succes!" << endl;
+                                    break;
+                                }
+                            }
+                            if (ok == 0) {
+                                cout << "Nu a fost gasit dealership-ul dorit. Adaugati unul nou? DA/NU: " << endl;
+                                cin >> inp;
+                                if (inp == "DA") {
+                                    Dealership D;
+                                    (*Cars.back()).setIdDealership(D.getIdDealership()-1);
+                                    D.addCarToAvailableCars(Cars.back());
+                                    cin >> D;
+                                    Dealerships.push_back(new Dealership);
+                                    *Dealerships.back() = D;
+                                    cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
+                                }
+                            }
+                        } else {
+                            cout << "Nu a fost gasit dealership-ul dorit. Veti crea un dealership nou: " << endl;
+                            Dealership D;
+                            (*Cars.back()).setIdDealership(D.getIdDealership()-1);
+                            D.addCarToAvailableCars(Cars.back());
+                            cin >> D;
+                            Dealerships.push_back(new Dealership);
+                            *Dealerships.back() = D;
+                            cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
+                        }
+                    } else {
+                        cout << endl << "Veti crea un dealership nou: " << endl;
+                        Dealership D;
+                        (*Cars.back()).setIdDealership(D.getIdDealership()-1);
+                        D.addCarToAvailableCars(Cars.back());
+                        cin >> D;
+                        Dealerships.push_back(new Dealership);
+                        *Dealerships.back() = D;
+                        cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
+                    }
+                } else {
+                    cout << "Masina creata cu succes!" << endl;
+                }
+            } else if (inp == "angajat" || inp == "a") {
+                Employee A;
+                cin >> A;
+                Employees.push_back(new Employee);
+                *Employees.back() = A;
+                cout << "Adaugati acest angajat unui dealership? DA/NU: ";
+                cin >> inp;
+                if (inp == "DA") {
+                    cout << endl << "Adaugati acest angajat unui dealership existent? DA/NU: ";
+                    cin >> inp;
+                    if (inp == "DA") {
+                        if (Dealerships.size() > 0) {
+                            cout << "Va rugam alegeti un dealership dintre urmatoarele: " << endl;
+                            int ok = 0;
+                            for (int i = 0; i < Dealerships.size(); i++) {
+                                cout << *Dealerships[i];
+                                cout << "Este acesta dealership-ul dorit? DA/NU: ";
+                                cin >> inp;
+                                if (inp == "DA") {
+                                    (*Employees.back()).setIdDealership(Dealerships[i]->getIdDealership()-1);
+                                    Dealerships[i]->addEmployee(Employees.back());  // ?????? deoarece Dealerships[i] e un pointer?
+//                                    A.setIdDealership(Dealerships[i]->getIdDealership());
+//                                    Dealerships[i]->addEmployee(A);  // ?????? deoarece Dealerships[i] e un pointer?
+                                    ok = 1;
+                                    cout << "Angajat creat si adaugat cu succes!" << endl;
+                                    break;
+                                }
+                            }
+                            if (ok == 0) {
+                                cout << "Nu a fost gasit dealership-ul dorit. Adaugati unul nou? DA/NU: ";
+                                cin >> inp;
+                                if (inp == "DA") {
+                                    Dealership D;
+//                                    A.setIdDealership(D.getIdDealership());
+//                                    D.addEmployee(*Employees.back());
+                                    (*Employees.back()).setIdDealership(D.getIdDealership()-1);
+                                    D.addEmployee(Employees.back());
+                                    cin >> D;
+                                    Dealerships.push_back(new Dealership);
+                                    *Dealerships.back() = D;
+                                    cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
+                                }
+                            }
+                        } else {
+                            cout << "Nu a fost gasit dealership-ul dorit. Veti crea un dealership nou: ";
+                            Dealership D;
+//                            A.setIdDealership(D.getIdDealership());
+//                            D.addEmployee(*Employees.back());
+                            (*Employees.back()).setIdDealership(D.getIdDealership()-1);
+                            D.addEmployee(Employees.back());
+                            cin >> D;
+                            Dealerships.push_back(new Dealership);
+                            *Dealerships.back() = D;
+                            cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
+                        }
+                    } else {
+                        cout << "Veti crea un dealership nou: " << endl;
+                        Dealership D;
+                        (*Employees.back()).setIdDealership(D.getIdDealership()-1);
+                        D.addEmployee(Employees.back());
+                        cin >> D;
+                        Dealerships.push_back(new Dealership);
+                        *Dealerships.back() = D;
+                        cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
+                    }
+                } else {
+                    cout << "Angajat creat cu succes!" << endl;
+                }
+
+            } else if (inp == "cheltuiala" || inp == "c") {
+                Expense E;
+                cin >> E;
+                Expenses.push_back(new Expense);
+                *Expenses.back() = E;
+                cout << "Adaugati aceasta cheltuiala unui dealership? DA/NU: ";
+                cin >> inp;
+                if (inp == "DA") {
+                    cout << endl << "Puneti aceasta cheltuiala intr-un dealership existent? DA/NU: ";
+                    cin >> inp;
+                    if (inp == "DA") {
+                        if (Dealerships.size() > 0) {
+                            cout << "Va rugam alegeti un dealership dintre urmatoarele: " << endl;
+                            int ok = 0;
+                            for (int i = 0; i < Dealerships.size(); i++) {
+                                cout << *Dealerships[i];
+                                cout << "Este acesta dealership-ul dorit? DA/NU: ";
+                                cin >> inp;
+                                if (inp == "DA") {
+                                    (*Expenses.back()).setIdDealership(Dealerships[i]->getIdDealership()-1);
+                                    Dealerships[i]->addExpense(Expenses.back());
+                                    ok = 1;
+                                    cout << "Cheltuiala creata si adaugata cu succes!" << endl;
+                                    break;
+                                }
+                            }
+                            if (ok == 0) {
+                                cout << "Nu a fost gasit dealership-ul dorit. Adaugati unul nou? DA/NU: ";
+                                cin >> inp;
+                                if (inp == "DA") {
+                                    Dealership D;
+//                                    E.setIdDealership(D.getIdDealership());
+//                                    D.addExpense(*Expenses.back());
+                                    (*Expenses.back()).setIdDealership(D.getIdDealership()-1);
+                                    D.addExpense(Expenses.back());
+                                    cin >> D;
+                                    Dealerships.push_back(new Dealership);
+                                    *Dealerships.back() = D;
+                                    cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
+                                }
+                            }
+                        } else {
+                            cout << "Nu a fost gasit dealership-ul dorit. Veti crea unul nou: ";
+                            Dealership D;
+                            (*Expenses.back()).setIdDealership(D.getIdDealership()-1);
+                            D.addExpense(Expenses.back());
+                            cin >> D;
+                            Dealerships.push_back(new Dealership);
+                            *Dealerships.back() = D;
+                            cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
+                        }
+                    } else {
+                        cout << "Veti crea un dealership nou: ";
+                        Dealership D;
+                        (*Expenses.back()).setIdDealership(D.getIdDealership()-1);
+                        D.addExpense(Expenses.back());
+                        cin >> D;
+                        Dealerships.push_back(new Dealership);
+                        *Dealerships.back() = D;
+                        cout << "Totul a fost adaugata cu succes intr-un dealership nou!" << endl;
+                    }
+                } else {
+                    cout << "Cheltuiala creata cu succes!" << endl;
+                }
+            }
+        } else if (inp == "2") {
+            int inp2;
+            cout << "Cautati un dealership (1), o masina (2) sau un angajat (3)?";
+            cin >> inp2;
+            switch (inp2) {
+                case 1: {
+                    string nume, locatie;
+                    cout << "Scrieti numele si locatia dealership-ului";
+                    cin>>nume;
+                    cin>>locatie;
+                    vector<Dealership> res = searchDealership(nume, locatie);
+                    if(res.size()){
+                        for (int i = 0; i < res.size(); i++) {
+                            cout << res[i] << endl;
+                            cout<<"Doriti sa vedeti cea mai rapida masina din acest dealership? DA/NU"; cin>>inp;
+                            if(inp=="DA") cout<<res[i].fastestCar()<<endl;
+                        }
+                    } else {
+                        cout << "Nu au fost gasite dealership-uri conform cerintelor.." << endl;
+                    }
+                    break;
+                };
+                case 2: {
+                    cout << "Va rugam completati urmatoarele pentru a cauta o masina:" << endl;
+                    char model[200], engineLayout[200];
+                    float minP, maxP;
+                    int minHP, maxHP, minYr, maxYr, minKm, maxKm;
+                    string combustible;
+                    cout << "Model: ";
+                    cin >> model;
+                    cout << "Layout motor: ";
+                    cin >> engineLayout;
+                    cout << "Combustibil: ";
+                    cin >> combustible;
+                    cout << "Minim cai putere: ";
+                    cin >> minHP;
+                    cout << "Maxim cai putere: ";
+                    cin >> maxHP;
+                    cout << "Minim an: ";
+                    cin >> minYr;
+                    cout << "Maxim an: ";
+                    cin >> maxYr;
+                    cout << "Minim km: ";
+                    cin >> minKm;
+                    cout << "Maxim km: ";
+                    cin >> maxKm;
+                    cout << "Minim pret: ";
+                    cin >> minP;
+                    cout << "Maxim pret: ";
+                    cin >> maxP;
+                    vector<Car> res = searchCar(model, engineLayout, minP, maxP, minHP, maxHP, minYr, maxYr, minKm,
+                                                maxKm, combustible);
+                    if(res.size() > 0){
+                        for (int i = 0; i < res.size(); i++) {
+                            cout << "Masina " << i << ": " << endl << res[i] << endl;
+                        }
+                        int carIndex;
+                        cout << "Scrieti numarul masinii dorite:"; cin >> carIndex;
+                        cout << res[carIndex] << endl;
+                        cout<<res[carIndex].howFastIsThisCar()<<endl;
+                    }
+                    else{
+                        cout << "Nu s-a putut gasi nicio masina conform cerintelor. Ne pare rau!" << endl;
+                    }
+                    break;
+                };
+                case 3: {
+                    string nume;
+                    float minSalariu;
+                    cout << "Numele angajatului: ";
+                    cin >> nume;
+                    cout << "Doriti sa cautati si dupa salariul minim? DA/NU: ";
+                    cin >> inp;
+                    vector<Employee> res = {};
+                    if (inp == "DA") {
+                        cout << "Salariu: ";
+                        cin >> minSalariu;
+                        res = searchEmployee(nume, minSalariu);
+                    } else {
+                        res = searchEmployee(nume, minSalariu);
+                    }
+                    if(res.size()){
+                        for(int i=0; i<res.size(); i++){
+                            cout<<res[i]<<endl;
+                            cout<<"Salariu dupa cheltuieli: "; cout<<res[i].getRealSalary()<<endl;
+                            cout<<"Ar trebui acest angajat sa fie concediat? "; cout<<res[i].shouldGetFired();
+                        }
+                    } else {
+                        cout << "Nu au fost gasiti angajati conform cerintelor.."<<endl;
+                    }
+                    break;
+                };
+            }
+        } else if (inp == "3") {
+            cout << "Doriti sa modificati un dealership (1), o masina (2), un angajat (3) sau o cheltuiala (4)?"
+                 << endl;
+            int inp2;
+            cin >> inp2;
+            switch (inp2) {
+                case 1: {
+                    bool ok = 0;
+                    for (int i = 0; i < Dealerships.size(); i++) {
+                        cout << *Dealerships[i] << endl;
+                        cout << "Este acesta dealership-ul cautat? DA/NU: ";
+                        cin >> inp;
+                        if (inp == "DA") {
+                            cin >> *Dealerships[i];
+                            ok = 1;
+                            break;
+                        }
+                    }
+                    if (ok == 0) {
+                        cout << "Dealership-ul nu a fost gasit." << endl;
+                    }
+                    break;
+                }
+                case 2: {
+                    bool ok = 0;
+                    for (int i = 0; i < Cars.size(); i++) {
+                        cout << *Cars[i] << endl;
+                        cout << "Este aceasta masina cautata? DA/NU: ";
+                        cin >> inp;
+                        if (inp == "DA") {
+                            Dealership* d;
+                            bool k = 0;
+                            if(Cars[i]->getIdDealership() != -1) {
+                                for (int j = 0; j < Dealerships.size(); j++) {
+                                    // modific valoarea totala a masinilor din dealership
+                                    // prima data scad valoarea actuala a masinii ce urmeaza sa fie modificata
+                                    // dupa care adaug noua valoare
+                                    if (Dealerships[j]->getIdDealership()-1 == Cars[i]->getIdDealership()) {
+                                        float worth = Dealerships[i]->getCarsWorth() - Cars[i]->getPrice();
+                                        Dealerships[j]->setCarsWorth(worth);
+                                        d = Dealerships[j];
+                                        k = 1;
+                                    }
+                                }
+                            }
+                            cin >> *Cars[i];
+                            if(k)
+                                d->setCarsWorth(d->getCarsWorth()+Cars[i]->getPrice());
+                            ok = 1;
+                            break;
+                        }
+                    }
+                    if (ok == 0) {
+                        cout << "Masina cautata nu a fost gasita" << endl;
+                    }
+                    break;
+                }
+                case 3: {
+                    bool ok = 0;
+                    for (int i = 0; i < Employees.size(); i++) {
+                        cout << *Employees[i] << endl;
+                        cout << "Este acesta angajatul cautat? DA/NU: ";
+                        cin >> inp;
+                        if (inp == "DA") {
+                            bool k = 0;
+                            Dealership *d;
+                            if(Employees[i]->getIdDealership() != -1) {
+                                for (int j = 0; j < Dealerships.size(); j++) {
+                                    if (Dealerships[j]->getIdDealership()-1 == Employees[i]->getIdDealership()) {
+                                        k = 1;
+                                        d = Dealerships[j];
+                                        float amount = d->getEmployeeSalariesTotal() - Employees[i]->getSalary();
+                                        d->setEmployeeSalary(amount);
+                                    }
+                                }
+                            }
+                            cin >> *Employees[i];
+                            if(k){
+                                d->setEmployeeSalary(d->getEmployeeSalariesTotal()+Employees[i]->getSalary());
+                            }
+                            ok = 1;
+                            break;
+                        }
+                    }
+                    if (ok == 0) {
+                        cout << "Angajatul nu a fost gasit." << endl;
+                    }
+                    break;
+                }
+                case 4: {
+                    bool ok = 0;
+                    for (int i = 0; i < Expenses.size(); i++) {
+                        cout << *Expenses[i] << endl;
+                        cout << "Este acesta cheltuiala cautata? DA/NU: ";
+                        cin >> inp;
+                        if (inp == "DA") {
+                            bool k = 0;
+                            Dealership *d;
+                            if(Expenses[i]->getIdDealership() != -1) {
+                                for (int j = 0; j < Dealerships.size(); j++) {
+                                    if (Dealerships[j]->getIdDealership()-1 == Expenses[i]->getIdDealership()) {
+                                        k = 1;
+                                        d = Dealerships[j];
+                                        float amount = d->getTotalSpentOnExpenses() - Expenses[i]->getCost();
+                                        d->setExpenseCost(amount);
+                                    }
+                                }
+                            }
+                            cin >> *Expenses[i];
+                            if(k){
+                                d->setExpenseCost(d->getTotalSpentOnExpenses()+Expenses[i]->getCost());
+                            }
+                            ok = 1;
+                            break;
+                        }
+                    }
+                    if (ok == 0) {
+                        cout << "Cheltuiala nu a fost gasita." << endl;
+                    }
+                    break;
+                }
+                default:
+                    cout << "Nu ati ales nimic" << endl;
+                    break;
+            }
+        } else if (inp == "4") {
+            cout << "Doriti sa stergeti un dealership (1), o masina (2), angajat (3) sau cheltuiala (4)?";
+            int inp2;
+            cin >> inp2;
+            switch (inp2) {
+                case 1: {
+                    bool ok = 0;
+                    for (int i = 0; i < Dealerships.size(); i++) {
+                        cout << *Dealerships[i] << endl;
+                        cout << "Este acesta dealership-ul cautat? DA/NU: ";
+                        cin >> inp;
+                        if (inp == "DA") {
+                            for(int j=0; j<Cars.size(); j++){
+                                if(Cars[j]->getIdDealership() == Dealerships[i]->getIdDealership()-1){
+                                    Cars[j]->setIdDealership(-1);
+                                }
+                            }
+                            for(int j=0; j<Employees.size(); j++){
+                                if(Employees[j]->getIdDealership() == Dealerships[i]->getIdDealership()-1){
+                                    Employees[j]->setIdDealership(-1);
+                                }
+                            }
+                            for(int j=0; j<Expenses.size(); j++){
+                                if(Expenses[j]->getIdDealership() == Dealerships[i]->getIdDealership()-1){
+                                    Expenses[j]->setIdDealership(-1);
+                                }
+                            }
+                            Dealerships.erase(Dealerships.begin() + i);
+                            ok = 1;
+                            break;
+                        }
+                    }
+                    if (ok == 0) {
+                        cout << "Dealership-ul nu a fost gasit." << endl;
+                    }
+                    break;
+                }
+                case 2: {
+                    bool ok = 0;
+                    for (int i = 0; i < Cars.size(); i++) {
+                        cout << *Cars[i] << endl;
+                        cout << "Este aceasta masina cautata? DA/NU: ";
+                        cin >> inp;
+                        if (inp == "DA") {
+//                             In cazul in care masina se afla intr-un dealership, modificam si lucrurile din dealership
+                            if(Cars[i]->getIdDealership() != -1){
+                                for(int j=0; j<Dealerships.size(); j++){
+                                    if(Cars[i]->getIdDealership() == Dealerships[j]->getIdDealership()-1){
+                                        float worth = Dealerships[j]->getCarsWorth()-Cars[i]->getPrice();
+                                        Dealerships[j]->setCarsWorth(worth);
+                                        Dealerships[j]->setAvailableCars(Cars[i]->getId());
+                                        break;
+                                    }
+                                }
+                            }
+                            Cars.erase(Cars.begin()+i);
+                            ok = 1;
+                            break;
+                        }
+                    }
+                    if (ok == 0) {
+                        cout << "Masina cautata nu a fost gasita" << endl;
+                    }
+                    break;
+                }
+                case 3: {
+                    bool ok = 0;
+                    for (int i = 0; i < Employees.size(); i++) {
+                        cout << *Employees[i] << endl;
+                        cout << "Este acesta angajatul cautat? DA/NU: ";
+                        cin >> inp;
+                        if (inp == "DA") {
+                            if(Employees[i]->getIdDealership() != -1){
+                                for(int j=0; j<Dealerships.size(); j++){
+                                    if(Employees[i]->getIdDealership() == Dealerships[j]->getIdDealership()-1){
+                                        float worth = Dealerships[j]->getEmployeeSalariesTotal()-Employees[i]->getSalary();
+                                        Dealerships[j]->setEmployeeSalary(worth);
+                                        Dealerships[j]->setEmployees(Employees[i]->getId());
+                                        break;
+                                    }
+                                }
+                            }
+                            Employees.erase(Employees.begin() + i);
+                            ok = 1;
+                            break;
+                        }
+                    }
+                    if (ok == 0) {
+                        cout << "Angajatul nu a fost gasit." << endl;
+                    }
+                    break;
+                }
+                case 4: {
+                    bool ok = 0;
+                    for (int i = 0; i < Expenses.size(); i++) {
+                        cout << *Expenses[i] << endl;
+                        cout << "Este acesta cheltuiala cautata? DA/NU: ";
+                        cin >> inp;
+                        if (inp == "DA") {
+                            if(Expenses[i]->getIdDealership() != -1){
+                                for(int j=0; j<Dealerships.size(); j++){
+                                    if(Expenses[i]->getIdDealership() == Dealerships[j]->getIdDealership()-1){
+                                        double worth = Dealerships[j]->getTotalSpentOnExpenses()-Expenses[i]->getCost();
+                                        Dealerships[j]->setExpenseCost(worth);
+                                        Dealerships[j]->setExpenses(Expenses[i]->getId());
+                                        break;
+                                    }
+                                }
+                            }
+                            Expenses.erase(Expenses.begin() + i);
+                            ok = 1;
+                            break;
+                        }
+                    }
+                    if (ok == 0) {
+                        cout << "Cheltuiala nu a fost gasita." << endl;
+                    }
+                    break;
+                }
+                default:
+                    cout << "Nu ati ales nimic" << endl;
+                    break;
+            }
+        } else if(inp == "n"){
+            break;
+        } else {
+            cout << "Vă rugăm să alegeti dintre creare (1), cautare (2), modificare (3) si stergere (4) sau oprire (n)!" << endl;
+        }
+    }
+
+    cout<<"==================DEALERSHIPS:"<<endl;
+    for(int i=0; i<Dealerships.size(); i++){
+        cout<<*Dealerships[i]<<endl;
+    }
+    cout<<"==================CarS:"<<endl;
+    for(int i=0; i<Cars.size(); i++){
+        cout<<*Cars[i]<<endl;
+    }
+    cout<<"==================EmployeeS:"<<endl;
+    for(int i=0; i<Employees.size(); i++){
+        cout<<*Employees[i]<<endl;
+    }
+    cout<<"==================ExpenseS:"<<endl;
+    for(int i=0; i<Expenses.size(); i++){\
+        cout<<*Expenses[i]<<endl;
+    }
 
     return 0;
 }
