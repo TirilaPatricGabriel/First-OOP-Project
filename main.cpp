@@ -256,8 +256,8 @@ void Car::setHorsePower(int horsePower){
     this->horsePower = horsePower;
 }
 void Car::setAccelerationTimes(float NewAccelerationTime) {
-    // trebuie să schimb spațiul pe care îl are array-ul meu pentru a adăuga un element,
-    // deci voi fi nevoit să îl copiez în altul, să îi măresc spațiul și apoi să copiez înapoi și să adaug elementul
+    // trebuie sa schimb spatiul pe care il are array-ul meu pentru a adauga un element,
+    // deci voi fi nevoit sa il copiez in altul, sa ii maresc spatiul si apoi sa copiez inapoi si sa adaug elementul
     float* a = new float[this->nrAccelerationIntervals];
     int i;
     for(i=0; i<nrAccelerationIntervals; i++){
@@ -411,13 +411,13 @@ Car& Car::operator =(const Car &obj){
     return *this;
 
 }
-bool Car::operator ==(const Car &obj){ // dacă au același nume, același motor și același an sunt considerate egale
+bool Car::operator ==(const Car &obj){ // daca au acelasi nume, acelasi motor si acelasi an sunt considerate egale
     if(strcmp(this->name, obj.name) == 0 && strcmp(this->engineLayout, obj.engineLayout) == 0 && this->year == obj.year){
         return true;
     }
     return false;
 }
-bool Car::operator <(const Car &obj){ // dacă pretul este mai mare, dar masina este mai veche, are km mai multi si cai putere mai putini este true
+bool Car::operator <(const Car &obj){ // daca pretul este mai mare, dar masina este mai veche, are km mai multi si cai putere mai putini este true
     if(this->horsePower < obj.horsePower && this->price > obj.price && obj.year > this->year && obj.km < this->km)
         return true;
     return false;
@@ -427,12 +427,12 @@ float Car::operator [](int i){ // timpul de accelerare corespunzator index-ului 
     if(i >= this->nrAccelerationIntervals) throw runtime_error("index invalid");
     return this->accelerationTimes[i];
 }
-Car Car::operator+(int add){ // se mărește prețul mașinii, funcție membru pentru Car+int
+Car Car::operator+(int add){ // se mareste pretul masinii, functie membru pentru Car+int
     Car C(*this);
     C.price += add;
     return C;
 }
-Car operator+(int add, Car C){ // se mărește prețul mașinii, functie friend pentru int+Car
+Car operator+(int add, Car C){ // se mareste pretul masinii, functie friend pentru int+Car
     C.price += add;
     return C;
 }
@@ -1366,19 +1366,20 @@ Car Dealership::fastestCar(){ // caut masina cu cei mai multi HP dintre cele det
 }
 
 ostream& operator <<(ostream &out, const Dealership &ds){
-    out<<"ID: "<<ds.idDealership<<endl<<"Name: "<<ds.name<<endl<<"Location: "<<ds.location<<endl<<"Worth in cars: "<<ds.carsWorth<<endl<<"Total of money spent on employee salaries: "<<ds.employeeSalariesTotal<<endl;
+    out<<"************************** Dealership "<<ds.name<<" **************************"<<endl;
+    out<<"Location: "<<ds.location<<endl<<"Worth in cars: "<<ds.carsWorth<<endl<<"Total of money spent on employee salaries: "<<ds.employeeSalariesTotal<<endl;
 
-    cout<<"Available Cars: "<<endl;
+    cout<<"=====================Available Cars: "<<endl;
     for(int i=0; i<ds.availableCars.size(); i++){
         out<<*ds.availableCars[i]<<endl;
     }
 
-    cout<<"Employees: "<<endl;
+    cout<<"=====================Employees: "<<endl;
     for(int i=0; i<ds.employees.size(); i++){
         out<<*ds.employees[i]<<endl;
     }
 
-    cout<<"Expenses: "<<endl;
+    cout<<"=====================Expenses: "<<endl;
     for(int i=0; i<ds.expenses.size(); i++){
         out<<*ds.expenses[i]<<endl;
     }
@@ -1416,6 +1417,7 @@ istream& operator >>(istream& in, Dealership& ds){
                             ds.availableCars.push_back(Cars[i]);
                             ds.carsWorth += Cars[i]->getPrice();
                             ok = 1;
+                            cout<<"Masina adaugata cu succes"<<endl;
                             break;
                         }
                     }
@@ -1752,23 +1754,26 @@ int main() {
         if (inp == "1") {
             cout << "Doriti sa creati un dealership (d), o masina (m), un angajat (a) sau o cheltuiala (c)?";
             cin >> inp;
+            system("cls");
             if (inp == "dealership" || inp == "d") {
-                //system("cls");
+                system("cls");
                 Dealership D;
                 cin >> D;
                 Dealerships.push_back(new Dealership);
                 *Dealerships.back() = D;
-                //system("cls");
+                system("cls");
                 cout<<"Dealership creat cu succes!"<<endl;
             } else if (inp == "masina" || inp == "m") {
-                //system("cls");
+                system("cls");
                 Cars.push_back(new Car);
                 cin >> *Cars.back();
                 cout << "Adaugati aceasta masina unui dealership? DA/NU: ";
                 cin >> inp;
+                system("cls");
                 if (inp == "DA") {
                     cout << endl << "Puneti aceasta masina intr-un dealership existent? DA/NU: ";
                     cin >> inp;
+                    system("cls");
                     if (inp == "DA") {
                         if (Dealerships.size() > 0) {
                             cout << endl << "Va rugam alegeti un dealership dintre urmatoarele: " << endl;
@@ -1777,11 +1782,12 @@ int main() {
                                 cout << *Dealerships[i];
                                 cout << "Este acesta dealership-ul dorit? DA/NU: ";
                                 cin >> inp;
+                                system("cls");
                                 if (inp == "DA") {
                                     (*Cars.back()).setIdDealership(Dealerships[i]->getIdDealership()-1);
                                     Dealerships[i]->addCarToAvailableCars(Cars.back());  // ?????? deoarece Dealerships[i] e un pointer?
                                     ok = 1;
-                                    //system("cls");
+                                    system("cls");
                                     cout << "Masina creata si adaugata cu succes!" << endl;
                                     break;
                                 }
@@ -1789,6 +1795,7 @@ int main() {
                             if (ok == 0) {
                                 cout << "Nu a fost gasit dealership-ul dorit. Adaugati unul nou? DA/NU: " << endl;
                                 cin >> inp;
+                                system("cls");
                                 if (inp == "DA") {
                                     Dealership D;
                                     (*Cars.back()).setIdDealership(D.getIdDealership());
@@ -1796,7 +1803,7 @@ int main() {
                                     cin >> D;
                                     Dealerships.push_back(new Dealership);
                                     *Dealerships.back() = D;
-                                    //system("cls");
+                                    system("cls");
                                     cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
                                 }
                             }
@@ -1808,7 +1815,7 @@ int main() {
                             cin >> D;
                             Dealerships.push_back(new Dealership);
                             *Dealerships.back() = D;
-                            //system("cls");
+                            system("cls");
                             cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
                         }
                     } else {
@@ -1819,24 +1826,26 @@ int main() {
                         cin >> D;
                         Dealerships.push_back(new Dealership);
                         *Dealerships.back() = D;
-                        //system("cls");
+                        system("cls");
                         cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
                     }
                 } else {
-                    //system("cls");
+                    system("cls");
                     cout << "Masina creata cu succes!" << endl;
                 }
             } else if (inp == "angajat" || inp == "a") {
-                //system("cls");
+                system("cls");
                 Employee A;
                 cin >> A;
                 Employees.push_back(new Employee);
                 *Employees.back() = A;
                 cout << "Adaugati acest angajat unui dealership? DA/NU: ";
                 cin >> inp;
+                system("cls");
                 if (inp == "DA") {
                     cout << endl << "Adaugati acest angajat unui dealership existent? DA/NU: ";
                     cin >> inp;
+                    system("cls");
                     if (inp == "DA") {
                         if (Dealerships.size() > 0) {
                             cout << "Va rugam alegeti un dealership dintre urmatoarele: " << endl;
@@ -1845,11 +1854,12 @@ int main() {
                                 cout << *Dealerships[i];
                                 cout << "Este acesta dealership-ul dorit? DA/NU: ";
                                 cin >> inp;
+                                system("cls");
                                 if (inp == "DA") {
                                     (*Employees.back()).setIdDealership(Dealerships[i]->getIdDealership()-1);
                                     Dealerships[i]->addEmployee(Employees.back());
                                     ok = 1;
-                                    //system("cls");
+                                    system("cls");
                                     cout << "Angajat creat si adaugat cu succes!" << endl;
                                     break;
                                 }
@@ -1857,6 +1867,7 @@ int main() {
                             if (ok == 0) {
                                 cout << "Nu a fost gasit dealership-ul dorit. Adaugati unul nou? DA/NU: ";
                                 cin >> inp;
+                                system("cls");
                                 if (inp == "DA") {
                                     Dealership D;
                                     (*Employees.back()).setIdDealership(D.getIdDealership());
@@ -1864,7 +1875,7 @@ int main() {
                                     cin >> D;
                                     Dealerships.push_back(new Dealership);
                                     *Dealerships.back() = D;
-                                    //system("cls");
+                                    system("cls");
                                     cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
                                 }
                             }
@@ -1876,7 +1887,7 @@ int main() {
                             cin >> D;
                             Dealerships.push_back(new Dealership);
                             *Dealerships.back() = D;
-                            //system("cls");
+                            system("cls");
                             cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
                         }
                     } else {
@@ -1887,25 +1898,27 @@ int main() {
                         cin >> D;
                         Dealerships.push_back(new Dealership);
                         *Dealerships.back() = D;
-                        //system("cls");
+                        system("cls");
                         cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
                     }
                 } else {
-                    //system("cls");
+                    system("cls");
                     cout << "Angajat creat cu succes!" << endl;
                 }
 
             } else if (inp == "cheltuiala" || inp == "c") {
-                //system("cls");
+                system("cls");
                 Expense E;
                 cin >> E;
                 Expenses.push_back(new Expense);
                 *Expenses.back() = E;
                 cout << "Adaugati aceasta cheltuiala unui dealership? DA/NU: ";
                 cin >> inp;
+                system("cls");
                 if (inp == "DA") {
                     cout << endl << "Puneti aceasta cheltuiala intr-un dealership existent? DA/NU: ";
                     cin >> inp;
+                    system("cls");
                     if (inp == "DA") {
                         if (Dealerships.size() > 0) {
                             cout << "Va rugam alegeti un dealership dintre urmatoarele: " << endl;
@@ -1914,11 +1927,12 @@ int main() {
                                 cout << *Dealerships[i];
                                 cout << "Este acesta dealership-ul dorit? DA/NU: ";
                                 cin >> inp;
+                                system("cls");
                                 if (inp == "DA") {
                                     (*Expenses.back()).setIdDealership(Dealerships[i]->getIdDealership()-1);
                                     Dealerships[i]->addExpense(Expenses.back());
                                     ok = 1;
-                                    //system("cls");
+                                    system("cls");
                                     cout << "Cheltuiala creata si adaugata cu succes!" << endl;
                                     break;
                                 }
@@ -1926,6 +1940,7 @@ int main() {
                             if (ok == 0) {
                                 cout << "Nu a fost gasit dealership-ul dorit. Adaugati unul nou? DA/NU: ";
                                 cin >> inp;
+                                system("cls");
                                 if (inp == "DA") {
                                     Dealership D;
                                     (*Expenses.back()).setIdDealership(D.getIdDealership());
@@ -1933,7 +1948,7 @@ int main() {
                                     cin >> D;
                                     Dealerships.push_back(new Dealership);
                                     *Dealerships.back() = D;
-                                    //system("cls");
+                                    system("cls");
                                     cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
                                 }
                             }
@@ -1945,7 +1960,7 @@ int main() {
                             cin >> D;
                             Dealerships.push_back(new Dealership);
                             *Dealerships.back() = D;
-                            //system("cls");
+                            system("cls");
                             cout << "Totul a fost adaugat cu succes intr-un dealership nou!" << endl;
                         }
                     } else {
@@ -1956,19 +1971,20 @@ int main() {
                         cin >> D;
                         Dealerships.push_back(new Dealership);
                         *Dealerships.back() = D;
-                        //system("cls");
+                        system("cls");
                         cout << "Totul a fost adaugata cu succes intr-un dealership nou!" << endl;
                     }
                 } else {
-                    //system("cls");
+                    system("cls");
                     cout << "Cheltuiala creata cu succes!" << endl;
                 }
             }
         } else if (inp == "2") {
-            //system("cls");
+            system("cls");
             int inp2;
             cout << "Cautati un dealership (1), o masina (2) sau un angajat (3)?";
             cin >> inp2;
+            system("cls");
             switch (inp2) {
                 case 1: {
                     string nume, locatie;
@@ -1986,13 +2002,13 @@ int main() {
                                 if(res[i].getCarsWorth() > 0)
                                     cout<<res[i].fastestCar()<<endl;
                                 else{
-                                    //system("cls");
+                                    system("cls");
                                     cout<<"Nu se afla masini in acest dealership."<<endl;
                                 }
                             }
                         }
                     } else {
-                        //system("cls");
+                        system("cls");
                         cout << "Nu au fost gasite dealership-uri conform cerintelor.." << endl;
                     }
                     break;
@@ -2025,7 +2041,7 @@ int main() {
                     cin >> minP;
                     cout << "Maxim pret: ";
                     cin >> maxP;
-                    //system("cls");
+                    system("cls");
                     vector<Car> res = searchCar(model, engineLayout, minP, maxP, minHP, maxHP, minYr, maxYr, minKm,
                                                 maxKm, combustible);
                     if(res.size() > 0){
@@ -2038,7 +2054,7 @@ int main() {
                         cout<<res[carIndex].howFastIsThisCar()<<endl;
                     }
                     else{
-                        //system("cls");
+                        system("cls");
                         cout << "Nu s-a putut gasi nicio masina conform cerintelor. Ne pare rau!" << endl;
                     }
                     break;
@@ -2065,18 +2081,18 @@ int main() {
                             cout<<"Ar trebui acest angajat sa fie concediat? "; cout<<res[i].shouldGetFired()<<endl;
                         }
                     } else {
-                        //system("cls");
                         cout << "Nu au fost gasiti angajati conform cerintelor.."<<endl;
                     }
                     break;
                 };
             }
         } else if (inp == "3") {
-            //system("cls");
+            system("cls");
             cout << "Doriti sa modificati un dealership (1), o masina (2), un angajat (3) sau o cheltuiala (4)?"
                  << endl;
             int inp2;
             cin >> inp2;
+            system("cls");
             switch (inp2) {
                 case 1: {
                     bool ok = 0;
@@ -2084,18 +2100,19 @@ int main() {
                         cout << *Dealerships[i] << endl;
                         cout << "Este acesta dealership-ul cautat? DA/NU: ";
                         cin >> inp;
+                        system("cls");
                         if (inp == "DA") {
                             glb = 1;
                             cin >> *Dealerships[i];
                             glb = 0;
-                            //system("cls");
+                            system("cls");
                             cout<<"Dealership modificat cu succes!"<<endl;
                             ok = 1;
                             break;
                         }
                     }
                     if (ok == 0) {
-                        //system("cls");
+                        system("cls");
                         cout << "Dealership-ul nu a fost gasit." << endl;
                     }
                     break;
@@ -2106,6 +2123,7 @@ int main() {
                         cout << *Cars[i] << endl;
                         cout << "Este aceasta masina cautata? DA/NU: ";
                         cin >> inp;
+                        system("cls");
                         if (inp == "DA") {
                             Dealership* d;
                             bool k = 0;
@@ -2126,13 +2144,13 @@ int main() {
                             if(k)
                                 d->setCarsWorth(d->getCarsWorth()+Cars[i]->getPrice());
                             ok = 1;
-                            //system("cls");
+                            system("cls");
                             cout<<"Masina modificata cu succes!"<<endl;
                             break;
                         }
                     }
                     if (ok == 0) {
-                        //system("cls");
+                        system("cls");
                         cout << "Masina cautata nu a fost gasita" << endl;
                     }
                     break;
@@ -2143,6 +2161,7 @@ int main() {
                         cout << *Employees[i] << endl;
                         cout << "Este acesta angajatul cautat? DA/NU: ";
                         cin >> inp;
+                        system("cls");
                         if (inp == "DA") {
                             bool k = 0;
                             Dealership *d;
@@ -2160,14 +2179,14 @@ int main() {
                             if(k){
                                 d->setEmployeeSalary(d->getEmployeeSalariesTotal()+Employees[i]->getSalary());
                             }
-                            //system("cls");
+                            system("cls");
                             cout<<"Angajat modificat cu succes!"<<endl;
                             ok = 1;
                             break;
                         }
                     }
                     if (ok == 0) {
-                        //system("cls");
+                        system("cls");
                         cout << "Angajatul nu a fost gasit." << endl;
                     }
                     break;
@@ -2178,6 +2197,7 @@ int main() {
                         cout << *Expenses[i] << endl;
                         cout << "Este acesta cheltuiala cautata? DA/NU: ";
                         cin >> inp;
+                        system("cls");
                         if (inp == "DA") {
                             bool k = 0;
                             Dealership *d;
@@ -2195,20 +2215,20 @@ int main() {
                             if(k){
                                 d->setExpenseCost(d->getTotalSpentOnExpenses()+Expenses[i]->getCost());
                             }
-                            //system("cls");
+                            system("cls");
                             cout<<"Cheltuiala modificata cu succes!"<<endl;
                             ok = 1;
                             break;
                         }
                     }
                     if (ok == 0) {
-                        //system("cls");
+                        system("cls");
                         cout << "Cheltuiala nu a fost gasita." << endl;
                     }
                     break;
                 }
                 default:
-                    //system("cls");
+                    system("cls");
                     cout << "Nu ati ales nimic" << endl;
                     break;
             }
@@ -2216,6 +2236,7 @@ int main() {
             cout << "Doriti sa stergeti un dealership (1), o masina (2), angajat (3) sau cheltuiala (4)?";
             int inp2;
             cin >> inp2;
+            system("cls");
             switch (inp2) {
                 case 1: {
                     bool ok = 0;
@@ -2223,8 +2244,9 @@ int main() {
                         cout << *Dealerships[i] << endl;
                         cout << "Este acesta dealership-ul cautat? DA/NU: ";
                         cin >> inp;
+                        system("cls");
                         if (inp == "DA") {
-                            //system("cls");
+                            system("cls");
                             for(int j=0; j<Cars.size(); j++){
                                 if(Cars[j]->getIdDealership() == Dealerships[i]->getIdDealership()-1){
                                     Cars[j]->setIdDealership(-1);
@@ -2257,9 +2279,10 @@ int main() {
                         cout << *Cars[i] << endl;
                         cout << "Este aceasta masina cautata? DA/NU: ";
                         cin >> inp;
+                        system("cls");
                         if (inp == "DA") {
 //                             In cazul in care masina se afla intr-un dealership, modificam si lucrurile din dealership
-                            //system("cls");
+                            system("cls");
                             if(Cars[i]->getIdDealership() != -1){
                                 for(int j=0; j<Dealerships.size(); j++){
                                     if(Cars[i]->getIdDealership() == Dealerships[j]->getIdDealership()-1){
@@ -2287,8 +2310,9 @@ int main() {
                         cout << *Employees[i] << endl;
                         cout << "Este acesta angajatul cautat? DA/NU: ";
                         cin >> inp;
+                        system("cls");
                         if (inp == "DA") {
-                            //system("cls");
+                            system("cls");
                             if(Employees[i]->getIdDealership() != -1){
                                 for(int j=0; j<Dealerships.size(); j++){
                                     if(Employees[i]->getIdDealership() == Dealerships[j]->getIdDealership()-1){
@@ -2301,7 +2325,7 @@ int main() {
                             }
                             Employees.erase(Employees.begin() + i);
                             ok = 1;
-                            cout<<"Angajat sters cu succes!";
+                            cout<<"Angajat sters cu succes!"<<endl;
                             break;
                         }
                     }
@@ -2316,8 +2340,9 @@ int main() {
                         cout << *Expenses[i] << endl;
                         cout << "Este acesta cheltuiala cautata? DA/NU: ";
                         cin >> inp;
+                        system("cls");
                         if (inp == "DA") {
-                            //system("cls");
+                            system("cls");
                             if(Expenses[i]->getIdDealership() != -1){
                                 for(int j=0; j<Dealerships.size(); j++){
                                     if(Expenses[i]->getIdDealership() == Dealerships[j]->getIdDealership()-1){
@@ -2346,15 +2371,16 @@ int main() {
         } else if(inp == "n"){
             break;
         } else {
-            //system("cls");
-            cout << "Vă rugăm să alegeti dintre creare (1), cautare (2), modificare (3) si stergere (4) sau oprire (n)!" << endl;
+            system("cls");
+            cout << "Va rugam sa alegeti dintre creare (1), cautare (2), modificare (3) si stergere (4) sau oprire (n)!" << endl;
         }
     }
 
     int inp3 = 1;
-    while(inp3 != 5) {
+    while(inp3 == 1 || inp3 == 2 || inp3 == 3 || inp3 == 4) {
         cout << "Doriti sa vedeti dealership-urile (1), masinile (2), angajatii (3) , cheltuielile existente (4) sau nimic (5)?";
         cin >> inp3;
+        system("cls");
         switch (inp3) {
             case 1: {
                 for (int i = 0; i < Dealerships.size(); i++) {
@@ -2373,7 +2399,6 @@ int main() {
             }
             case 4: {
                 for (int i = 0; i < Expenses.size(); i++) {
-                    \
                     cout << *Expenses[i] << endl;
                 }
             }
@@ -2387,3 +2412,4 @@ int main() {
 
     return 0;
 }
+
