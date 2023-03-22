@@ -1188,6 +1188,7 @@ public:
     Dealership operator++(int);
     operator string() const ; // implicit, sa nu se modifice this
     operator string(); // explicit
+    Dealership operator +(const Dealership& obj);
 };
 
 Dealership::Dealership():idDealership(numberOfDealerships++){
@@ -1276,8 +1277,6 @@ Dealership::~Dealership(){
     float carsWorth, employeeSalariesTotal;
     double totalSpentOnExpenses;
 }
-
-// functionalitate care cauta o anumita masina pe baza parametrilor transmisi
 
 const int Dealership::getIdDealership() const {
     return this->idDealership+1;
@@ -1558,7 +1557,7 @@ Dealership& Dealership::operator =(const Dealership &obj){
     return *this;
 
 }
-bool Dealership::operator ==(const Dealership &obj){           // DE SCHIMBATTTTTTTTTTTTTTTTT??????????????????
+bool Dealership::operator ==(const Dealership &obj){
     if(this->name == obj.name && this->location == obj.location)
         return true;
     return false;
@@ -1643,11 +1642,63 @@ Dealership Dealership::operator++(int){
     this->totalSpentOnExpenses++;
     return B;
 }
-Dealership::operator string() const { // cast explicit
+Dealership::operator string() const {
     return  this->name;
 }
-Dealership::operator string()  { // cast explicit
+Dealership::operator string()  {
     return  this->name;
+}
+Dealership Dealership::operator +(const Dealership& obj){
+    Dealership D;
+    cout<<"HAU BAU"<<endl;
+    for(int i=0; i<this->availableCars.size(); i++){
+        D.addCarToAvailableCars(this->availableCars[i]);
+    }
+    for(int i=0; i<obj.availableCars.size(); i++){
+        bool found = 0;
+        for(int j=0; j<this->availableCars.size(); j++) {
+            if(obj.availableCars[i]->getId() == this->availableCars[j]->getId()){
+                found = 1;
+                break;
+            }
+        }
+        if(found == 0){
+            D.addCarToAvailableCars(this->availableCars[i]);
+        }
+    }
+
+    for(int i=0; i<this->expenses.size(); i++){
+        D.addExpense(this->expenses[i]);
+    }
+    for(int i=0; i<obj.expenses.size(); i++){
+        bool found = 0;
+        for(int j=0; j<this->expenses.size(); j++) {
+            if(*obj.expenses[i] == *this->expenses[j]){
+                found = 1;
+                break;
+            }
+        }
+        if(found == 0){
+            D.addExpense(obj.expenses[i]);
+        }
+    }
+
+    for(int i=0; i<this->employees.size(); i++){
+        D.addEmployee(this->employees[i]);
+    }
+    for(int i=0; i<obj.employees.size(); i++){
+        bool found = 0;
+        for(int j=0; j<this->employees.size(); j++) {
+            if(*obj.employees[i] == *this->employees[j]){
+                found = 1;
+                break;
+            }
+        }
+        if(found == 0){
+            D.addEmployee(obj.employees[i]);
+        }
+    }
+    return D;
 }
 
 
@@ -1694,21 +1745,6 @@ vector<Employee> searchEmployee(string name, float minSalary = 0){
 
 
 int main() {
-    float a[2] = {2.4, 4.5};
-    Car car("m2", "v8", 2000.99, 240, 3, 4, 2, a, 1, "cv");
-    Car car2("m3", "v", 300000, 430, 2016, 24000, 2, a, 1, "cb");
-    Car car3;
-    Dealership D("d1", "dloc", {}, {}, {});
-    Dealership D2("d2", "dloc2", {}, {}, {});
-    D2.addCarToAvailableCars(&car);
-    Dealership D3;
-    Employee E("ana", "plopii 20", 20, 4, 1.62, 3000.20, 'a', {});
-    Employee E2("ioana", "centrala", 19, 0, 1.68, 2000, 'c', {});
-    Employee E3;
-    Expense Es("cheltuiala1", 200, 1);
-    Expense Es2("cheltuiala2", 300, 1);
-    Expense Es3;
-
     string inp;
 
     while(true) {
